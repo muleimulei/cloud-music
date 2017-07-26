@@ -3,17 +3,13 @@
     <ul>
       <li id="brand">
         <i class="fa fa-github-alt" aria-hidden="true"></i>
-        <span>网易云音乐</span>
+        <span>我的云音乐</span>
       </li>
       <li id="history">
-        <button id="back">
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        </button>|
-        <button id="forward">
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
-        </button>
+        <a id="back" v-on:click.prevent="router.go(-1)" class="fa fa-chevron-left"></a>|
+        <a id="forward" v-on:click.prevent="router.go(1)" class="fa fa-chevron-right"></a>
       </li>
-      <li>
+      <li :class="{max: maxed}">
         <input type="text" name="search" placeholder="搜索音乐，歌手，歌词，用户">
       </li>
       <li>
@@ -27,42 +23,75 @@
         <i class="fa fa-envelope" aria-hidden="true"></i>
       </li>
       <li>
-        <i class="fa fa-cog" aria-hidden="true"></i>
+        <router-link to="/settings" class="fa fa-cog"></router-link>
       </li>
       <li>
         <i></i>
       </li>
       <li>
-        <i class="fa fa-minus" aria-hidden="true"></i>
+        <i class="fa fa-minus" aria-hidden="true" @click="minimum"></i>
       </li>
       <li>
-        <i class="fa fa-window-maximize" aria-hidden="true"></i>
+        <i class="fa fa-window-maximize" aria-hidden="true" @click="maxorminWin"></i>
       </li>
       <li>
-        <i class="fa fa-times" aria-hidden="true"></i>
+        <i class="fa fa-times" aria-hidden="true" @click="exit"></i>
       </li>
     </ul>
   </header>
 </template>
 
 <script>
-export default{
-
+import Vue from 'vue'
+import VueElectron from 'vue-electron'
+import router from '../router/index.js'
+router.push('/')
+Vue.use(VueElectron)
+export default {
+  methods: {
+    exit () {
+      return this.$electron.ipcRenderer.send('exit')
+    },
+    maxorminWin () {
+      this.maxed = !this.maxed
+      if (!this.maxed) {
+        return this.$electron.ipcRenderer.send('minWin')
+      } else {
+        return this.$electron.ipcRenderer.send('maxWin')
+      }
+    },
+    minimum () {
+      return this.$electron.ipcRenderer.send('minimum')
+    }
+  },
+  data () {
+    return {
+      maxed: false,
+      router
+    }
+  }
 }
 </script>
+ 
 <style>
 @import 'fontawesome/css/font-awesome.css';
-
+.max{
+  margin-right: auto !important;
+}
 ul{
   display: flex;
   list-style: none;
   background: rgb(208, 25, 25);
   color: white;
+  height: 6.8%;
 }
 #avator{
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+li, li> *{
+  -webkit-app-region: no-drag;
 }
 ul > li:nth-child(1){
   padding: 6px;
@@ -80,21 +109,26 @@ ul > li:nth-child(2){
   display: flex;
   color: black;
 }
-ul > li:nth-child(2) > button{
+ul > li:nth-child(2) > a {
   color: white;
   border: none;
-  padding: 3px;
+  padding-top: 3px;
   width: 50%;
   background: rgb(208, 25, 25);
   cursor: pointer;
   outline: none;
+  text-align: center;
+  text-decoration: none;
 }
-
+ul > li:nth-child(2) > a:active{
+  opacity: .2;
+}
 ul > li:nth-child(3){
   margin: 9px 9px;
+  position: relative;
 }
 ul > li:nth-child(3) > input{
-  font-size: 14px;
+  font-size: 12px;
   width: 200px;
   height: 21px;
   border: none;
@@ -105,16 +139,28 @@ ul > li:nth-child(3) > input{
   margin-right: 200px;
   outline: none;
 }
-
+ul > li:nth-child(3)::after{
+  content: '\f002';
+  font: normal normal normal 14px/1 FontAwesome;
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  opacity: .6;
+  position: absolute;
+  right: 215px;
+  top: 4px;
+}
 ul > li:nth-child(4){
   display: flex;
   align-items: center;
+  /* align-self: right; */
 }
 ul > li:nth-child(4) > span{
   margin-left: 3px;
   font-size: .8em;
   opacity: .7;
   position: relative;
+
 }
 ul > li:nth-child(4) > span:hover{
   opacity: 1;
@@ -168,11 +214,18 @@ ul > li:nth-child(8)::after{
   height: 20px;
   background: rgba(0, 0, 0, .5);
 }
+
 ul > li:nth-child(9){
   margin: 10px 20px;
   cursor: pointer;
   opacity: .7;
 }
+
+ul > li:nth-child(7) > a{
+  color: white;
+  text-decoration: none;
+}
+
 ul > li:nth-child(9):hover{
   opacity: 1;
 }
@@ -189,6 +242,7 @@ ul > li:nth-child(11){
   margin: 10px 15px;
   cursor: pointer;
   opacity: .7;
+  align-self: right;
 }
 ul > li:nth-child(11):hover{
   opacity: 1;
