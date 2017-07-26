@@ -1,35 +1,31 @@
 <template>
   <div id="music">
     <music-head></music-head>
-    <music-left></music-left>
     <router-view></router-view>
-    <music-bottom></music-bottom>
   </div>
 </template>
 
 <script>
 import musicHead from './components/musicHead'
-import musicLeft from './components/musicLeft'
-import musicBottom from './components/musicBottom'
 
 export default {
   name: 'my-project',
   components: {
-    musicHead,
-    musicLeft,
-    musicBottom
+    musicHead
   }
 }
 </script>
 
 <style>
-    
     *{
         margin: 0;
         padding: 0;
         -webkit-app-region: drag;
+        -webkit-user-select: none;
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
     }
-    body,#music{
+    body,#music,html{
         height: 100%;
         width: 100%;
     }
