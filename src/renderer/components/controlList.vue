@@ -20,8 +20,35 @@
 </template>
 
 <script>
-export default{
 
+export default{
+  data () {
+    return {
+      clickItem: null,
+      dds: []
+    }
+  },
+  methods: {
+    changeBG (m, x) {
+      if (this.clickItem !== null) {
+        console.log(this.clickItem)
+        this.clickItem.classList.remove('thickBG')
+      }
+      this.clickItem = x
+      this.clickItem.classList.add('thickBG')
+      // console.log(x.classList, this.clickItem)
+    }
+  },
+  mounted () {
+    this.dds = Array.from(document.querySelectorAll('dd'))
+    let m = this
+    this.dds.forEach((item) => {
+      item.addEventListener('click', function () {
+        // this.clickItem = this;
+        m.changeBG(m, this)
+      })
+    })
+  }
 }
 </script>
 
@@ -37,10 +64,12 @@ export default{
     cursor: pointer;
     font-size: 16px;
     position: relative;
+    transition: all .5s ease;
    }
    dd > a{
     text-decoration: none;
     color: rgba(0, 0, 0, .6);
+    
    }
    dd >a:hover{
     color: rgba(0, 0, 0, 1.0);
@@ -59,6 +88,7 @@ export default{
     position: absolute;
     left: 15px;
     top: 6px;
+    color: black;
    }
 
    dl#tuijian > dd:nth-child(3)::before{
@@ -106,7 +136,11 @@ export default{
         left: 15px;
         top: 6px;
     }
-
+    
+    .thickBG{
+      background: rgba(0, 0, 0, .3);
+      margin-left: 10px;
+    }
 
 
 </style>

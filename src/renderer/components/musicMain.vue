@@ -41,10 +41,9 @@
         height: inherit;
         display: flex;
         flex-direction: column;
-        background: rgba(216, 203, 203, 0.8);
+        background: #f5f5f7;
         padding: 5px;
     }
-    
     
     #bottom{
         height: 60px;
