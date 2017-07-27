@@ -1,25 +1,31 @@
 <template>
     <div id="main">
         <div id="top">
-            <section id="list">
-                <ul>
-                
-                </ul>
-                <div id="small">
-                    
-                </div>
-            </section>
-            <section id="show">
-            
-            </section>
+            <control-list id="list"></control-list>
+            <router-view></router-view>
         </div>
         <div id="bottom"></div>
     </div>
 </template>
 
+<script>
+  import controlList from './controlList'
+  // import router from '../router/index2'
+  export default {
+    data () {
+      return {
+        musics: ['1.mp4', '2.mp4', '3.mp4', '4.mp4']
+      }
+    },
+    components: {
+      controlList
+    }
+  }
+</script>
+
 <style>
     #main{
-        background: red;
+        background: rgba(112, 112, 112, .5);
         height: 93.2%;
         display: flex;
         flex-direction: column;
@@ -35,28 +41,14 @@
         height: inherit;
         display: flex;
         flex-direction: column;
+        background: rgba(216, 203, 203, 0.8);
+        padding: 5px;
     }
-    #list > ul{
-        width: 100%;
-        height: 88%;
-        background: #ccc;
-    }
-    #list > #small{
-        width: 100%;
-        height: 12%;
-    }
-    #show{
-        background: black;
-        flex-grow: 1;
-        background: green;
-    }
+    
+    
     #bottom{
         height: 60px;
         background: blue;
         width: 100%;
     }
 </style>
-
-<script>
-
-</script>
