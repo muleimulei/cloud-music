@@ -39,15 +39,15 @@
     }
     #list{
         width: 16%;
-        height: inherit;
         display: flex;
         flex-direction: column;
         background: #f5f5f7;
         padding: 5px;
+        overflow-y: scroll;
     }
     
     #bottom{
-        height: 40px;
+        height: 60px;
         background: #f5f5f7;
         width: 100%;
         border-top: .5px solid gray;
