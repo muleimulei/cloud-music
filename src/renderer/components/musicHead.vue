@@ -45,7 +45,7 @@
 import Vue from 'vue'
 import VueElectron from 'vue-electron'
 import router from '../router/index.js'
-router.push('/')
+// router.push('/')
 Vue.use(VueElectron)
 export default {
   methods: {
@@ -75,6 +75,9 @@ export default {
  
 <style>
 @import 'fontawesome/css/font-awesome.css';
+#brand{
+  -webkit-app-region: drag;
+}
 .max{
   margin-right: auto !important;
 }

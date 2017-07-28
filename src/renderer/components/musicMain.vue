@@ -4,13 +4,13 @@
             <control-list id="list"></control-list>
             <router-view></router-view>
         </div>
-        <div id="bottom"></div>
+        <music-bottom id="bottom"></music-bottom>
     </div>
 </template>
 
 <script>
   import controlList from './controlList'
-  // import router from '../router/index2'
+  import musicBottom from './musicBottom'
   export default {
     data () {
       return {
@@ -18,7 +18,8 @@
       }
     },
     components: {
-      controlList
+      controlList,
+      musicBottom
     }
   }
 </script>
@@ -37,7 +38,7 @@
         background: #000;
     }
     #list{
-        width: 20%;
+        width: 16%;
         height: inherit;
         display: flex;
         flex-direction: column;
@@ -46,8 +47,9 @@
     }
     
     #bottom{
-        height: 60px;
-        background: blue;
+        height: 40px;
+        background: #f5f5f7;
         width: 100%;
+        border-top: .5px solid gray;
     }
 </style>

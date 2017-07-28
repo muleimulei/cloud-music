@@ -2,7 +2,7 @@
     <div>
         <dl id="tuijian">
             <dt>推荐</dt>
-            <dd><router-link to="/main/findMusic">发现音乐</router-link></dd>
+            <dd class="thickBG"><router-link to="/main/findMusic">发现音乐</router-link></dd>
             <dd><router-link to="/main/privateFM"> 私人FM</router-link></dd>
             <dd><router-link to="/main/findMV">MV</router-link></dd>
             <dd><router-link to="/main/findFriend">朋友</router-link></dd>
@@ -36,15 +36,14 @@ export default{
       }
       this.clickItem = x
       this.clickItem.classList.add('thickBG')
-      // console.log(x.classList, this.clickItem)
     }
   },
   mounted () {
     this.dds = Array.from(document.querySelectorAll('dd'))
+    this.clickItem = this.dds[0]
     let m = this
     this.dds.forEach((item) => {
       item.addEventListener('click', function () {
-        // this.clickItem = this;
         m.changeBG(m, this)
       })
     })
@@ -54,6 +53,9 @@ export default{
 
 <style>
    @import './fontawesome/css/font-awesome.css';
+   div, dl, dd, a{
+    -webkit-app-region: no-drag;
+   }
    dd{
     font-family: 宋体;
     padding-left: 40px;
@@ -130,7 +132,7 @@ export default{
         top: 6px;
     }
     dl#mymusic > dd:nth-child(4)::before{
-        content: "\f019";
+        content: "\f218";
         font: normal normal normal 16px/1 FontAwesome;
         position: absolute;
         left: 15px;
@@ -141,6 +143,5 @@ export default{
       background: rgba(0, 0, 0, .3);
       margin-left: 10px;
     }
-
 
 </style>
