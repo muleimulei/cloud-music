@@ -16,7 +16,11 @@
             <th>大小</th>
           </thead>
           <tbody>
-            
+            <tr v-for = "(item, index) in musicList">
+              <td>{{index+1}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.size}}</td>
+            </tr>
           </tbody>
         </table>
     </div>
@@ -26,12 +30,13 @@
 <script>
 import config from '../../../../config.js'
 import {shell} from 'electron'
+import Tool from '../../../../tools'
 
 export default{
   data () {
     return {
       saveDir: config.getValue('downloadDir'),
-      musicList: []
+      musicList: null
     }
   },
   methods: {
@@ -40,9 +45,10 @@ export default{
     }
   },
   created () {
-
+    this.musicList = Tool.getMP3('E:/CloudMusic/music')
   }
 }
+
 </script>
 
 <style>
