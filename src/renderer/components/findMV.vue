@@ -9,9 +9,5 @@
 </script>
 
 <style>
-    #show{
-        background: black;
-        flex-grow: 1;
-        background: green;
-    }
+
 </style>

@@ -32,7 +32,17 @@ export default new Router({
         },
         {
           path: 'downloadManage',
-          component: require('@/components/downloadManage')
+          component: require('@/components/downloadManage'),
+          children: [
+            {
+              path: 'singleMusic',
+              component: require('@/components/download/singleMusic')
+            },
+            {
+              path: '*',
+              redirect: '/main/downloadManage/singleMusic'
+            }
+          ]
         },
         {
           path: 'mySave',

@@ -1,0 +1,89 @@
+<template>
+  <div>
+    <div id="head">
+      <div>
+        <span>存储目录：{{saveDir}}</span><span @click="openDir">打开目录</span>
+      </div>
+      <div>
+        <input type="text" placeholder="搜索我下载的音乐">
+      </div>
+    </div>
+    <div id="music_list">
+        <table>
+          <thead>
+            <th>序号</th>
+            <th>音乐标题</th>
+            <th>大小</th>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+    </div>
+  </div>
+</template>
+
+<script>
+import config from '../../../../config.js'
+import {shell} from 'electron'
+
+export default{
+  data () {
+    return {
+      saveDir: config.getValue('downloadDir'),
+      musicList: []
+    }
+  },
+  methods: {
+    openDir () {
+      shell.openItem(this.saveDir)
+    }
+  },
+  created () {
+
+  }
+}
+</script>
+
+<style>
+    #head{
+        padding: 10px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, .6);
+    }
+    #head > div{
+      position: relative;
+    }
+    #head > div > input{
+      outline: none;
+      border-radius: 15px/13px;
+      border: 1px solid rgba(0, 0, 0, .5);
+      padding: 5px 10px;
+    }
+    #head div:nth-child(2)::after{
+      content: '\f002';
+      font: normal normal normal 14px/1 FontAwesome;
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      opacity: .6;
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+    #head div:nth-child(1) span:nth-child(2){
+      margin: 0 10px;
+      color: blue;
+      font-size: .8em;
+      cursor: pointer;
+    }
+    #music_list{
+      text-align: center;
+    }
+    #music_list > table{
+      width: 100%;
+    }
+</style>
