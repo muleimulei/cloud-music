@@ -10,7 +10,7 @@
         <dl id="mymusic">
             <dt>我的音乐</dt>
             <dd> <router-link to="/main/myMusic"> 本地音乐 </router-link> </dd>
-            <dd> <router-link to="/main/downloadManage"> 下载管理 </router-link></dd>
+            <dd> <router-link to="/main/downloadManage/singleMusic"> 下载管理 </router-link></dd>
             <dd> <router-link to="/main/mySave"> 我的收藏 </router-link></dd>
         </dl>
         <dl>

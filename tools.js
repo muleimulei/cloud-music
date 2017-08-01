@@ -15,7 +15,7 @@ function getSize (num) {
     i++
     num /= 1024
   }
-  return parseInt(num) + SIZE[i]
+  return num.toFixed(1) + SIZE[i]
 }
 
 function iterator (dir, x) {

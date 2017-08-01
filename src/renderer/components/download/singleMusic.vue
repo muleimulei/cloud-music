@@ -16,7 +16,7 @@
             <th>大小</th>
           </thead>
           <tbody>
-            <tr v-for = "(item, index) in musicList">
+            <tr  v-for = "(item, index) in musicList" @dblclick="playMusic(item.path, $event)">
               <td>{{index+1}}</td>
               <td>{{item.name}}</td>
               <td>{{item.size}}</td>
@@ -36,16 +36,22 @@ export default{
   data () {
     return {
       saveDir: config.getValue('downloadDir'),
-      musicList: null
+      musicList: null,
+      musicSrc: null
     }
   },
   methods: {
     openDir () {
       shell.openItem(this.saveDir)
+    },
+    playMusic (path, e) {
+      this.$root.eventHub.$emit('playmusic', path)
     }
   },
   created () {
     this.musicList = Tool.getMP3('E:/CloudMusic/music')
+  },
+  mounted () {
   }
 }
 
@@ -91,5 +97,24 @@ export default{
     }
     #music_list > table{
       width: 100%;
+    }
+    #music_list  tr{
+      cursor: pointer;
+    }
+    #music_list   tr:nth-child(even){
+      background-color: cadetblue;
+      opacity: .6;
+    }
+    #music_list   tr:nth-child(even):hover{
+      background-color: cadetblue;
+      opacity: 1;
+    }
+    #music_list   tr:nth-child(odd){
+      background-color: bisque;
+      opacity: .6;
+    }
+    #music_list   tr:nth-child(odd):hover{
+      background-color: bisque;
+      opacity: 1;
     }
 </style>

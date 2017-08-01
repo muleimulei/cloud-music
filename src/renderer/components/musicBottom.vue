@@ -1,17 +1,17 @@
 <template>
 	<div id="bottom">
         <div id="ctrl">
-            <span><i class="fa fa-step-backward" aria-hidden="true"></i></span>
-            <span><i class="fa fa-stop" aria-hidden="true"></i></span> 
-            <span><i class="fa fa-step-forward" aria-hidden="true"></i></span> 
+            <span id="prevmusic"><i class="fa fa-step-backward" aria-hidden="true"></i></span>
+            <span id="playmusic"><i class="fa fa-play" aria-hidden="true"></i></span> 
+            <span id="nextmusic"><i class="fa fa-step-forward" aria-hidden="true"></i></span> 
         </div>
         <div id="bar">
-            <span>00.48</span>
+            <span>{{currentTime}}</span>
             <div>
                 <div class="progress"></div>
                 <i id="point"></i>
             </div>
-            <span>03.59</span>
+            <span>{{totalTime}}</span>
         </div>
         <div id="voice">
             <div id="vbar">
@@ -25,13 +25,63 @@
             <span>词</span>
             <span><i class="fa fa-list-alt" aria-hidden="true"></i></span>
         </div>
+        <input id="file" type="file" style="display:none">
     </div>
 </template>
 
 <script>
-	export default{
-
-	}
+export default{
+  data () {
+    return {
+      prevmusic: null,
+      playmusic: null,
+      nextmusic: null,
+      currentTime: '00:00',
+      totalTime: '00:00',
+      audio: new Audio(),
+      file: null
+    }
+  },
+  methods: {
+    handleData (s) {
+      this.audio.src = '刘若英 - 知道不知道.mp3'
+      this.audio.play()
+    },
+    updateProgress () {
+      this.currentTime = this._parseTime(this.audio.currentTime)
+    },
+    _parseTime (time) {
+      let minute = parseInt(parseFloat(time) / 60)
+      let seconds = parseInt(time - minute * 60)
+      if (minute / 10 < 1) {
+        minute = '0' + minute
+      }
+      if (seconds / 10 < 1) {
+        seconds = '0' + seconds
+      }
+      return `${minute}:${seconds}`
+    },
+    _audioPlay () {
+      this.totalTime = this._parseTime(this.audio.duration)
+      this.playmusic.children[0].classList.remove('fa-play')
+      this.playmusic.children[0].classList.add('fa-pause')
+    }
+  },
+  created () {
+    this.$root.eventHub.$on('playmusic', function (s) {
+      this.handleData(s)
+    }.bind(this))
+  },
+  mounted () {
+    this.prevmusic = document.querySelector('#prevmusic')
+    this.playmusic = document.querySelector('#playmusic')
+    this.nextmusic = document.querySelector('#nextmusic')
+    this.audio.addEventListener('timeupdate', this.updateProgress, false)
+    this.audio.addEventListener('canplay', this._audioPlay, false)
+    this.audio.addEventListener('pause', this.audioPause, false)
+    this.audio.addEventListener('ended', this.audioEnded, false)
+  }
+}
 </script>
 
 <style>
@@ -86,15 +136,15 @@
     height: 5px;
     background: gray;
     position: relative;
-    border-radius: 2px;
+    border-radius: 5px;
 }
 #bar > div > i#point{
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     display: block;
-    top: 0;
+    top: 50%;
     left: 0;
     background: white;
     transform: translate(0, -5px);
@@ -146,5 +196,12 @@ i#point::after{
 #lyric > span:nth-child(2){
     border: 1px solid rgba(0, 0, 0, .5);
     font-size: .8em;
+}
+
+.progress{
+  background: green;
+  border-radius: 5px;
+  height: 5px;
+  width: 0;
 }
 </style>

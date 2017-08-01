@@ -14,5 +14,8 @@ new Vue({
   components: { App },
   router,
   store,
-  template: '<App/>'
+  template: '<App/>',
+  data: {
+    eventHub: new Vue()
+  }
 }).$mount('#app')

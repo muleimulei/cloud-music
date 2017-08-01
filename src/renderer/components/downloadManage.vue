@@ -2,7 +2,7 @@
     <div id="downloadshow">
         <h5>
             <span class="bg" ><router-link to="/main/downloadManage/singleMusic">已下载单曲</router-link></span>
-            <span><router-link to="/main/downloadManage/download/MV">已下载电台节目</router-link></span>
+            <span><router-link to="/main/downloadManage/downloadMV">已下载电台节目</router-link></span>
             <span><router-link to="/main/downloadManage/downloadMV">已下载MV</router-link></span>
             <span><router-link to="/main/downloadManage/downloadNow">正在下载</router-link></span>
         </h5>
@@ -19,6 +19,10 @@ export default{
     #downloadshow{
         flex-grow: 1;
         background: #fafafa;
+
+    }
+    #downloadshow::after{
+        
     }
     #downloadshow h5{
         padding: 15px;
