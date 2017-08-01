@@ -39,7 +39,13 @@ export default{
       currentTime: '00:00',
       totalTime: '00:00',
       audio: new Audio(),
-      file: null
+      file: null,
+      press: false,
+      pro: null, // 进度条
+      point: null,  // 按钮
+      probg: null,
+      voicepro: null,
+      voiceprobg: null
     }
   },
   methods: {
@@ -49,6 +55,9 @@ export default{
     },
     updateProgress () {
       this.currentTime = this._parseTime(this.audio.currentTime)
+      let barlen = document.querySelector('#bar').children[1].clientWidth
+      let dis = this.audio.currentTime / this.audio.duration * barlen
+      this.pro.style.width = this.point.style.left = dis + 'px'
     },
     _parseTime (time) {
       let minute = parseInt(parseFloat(time) / 60)
@@ -63,8 +72,41 @@ export default{
     },
     _audioPlay () {
       this.totalTime = this._parseTime(this.audio.duration)
+      this._play()
+      this.voicepro.style.width = this.voiceprobg.clientWidth / 4 + 'px'
+      this.audio.volume = this.voiceprobg.clientWidth / 4 / this.voiceprobg.clientWidth
+    },
+    _changeStatus () {
+      if (!this.audio.src) return
+      if (this.audio.paused) {
+        this._play()
+      } else {
+        this._pause()
+      }
+    },
+    _play () {
+      this.audio.play()
       this.playmusic.children[0].classList.remove('fa-play')
       this.playmusic.children[0].classList.add('fa-pause')
+    },
+    _pause () {
+      this.audio.pause()
+      this.playmusic.children[0].classList.remove('fa-pause')
+      this.playmusic.children[0].classList.add('fa-play')
+    },
+    _movebar (e) {
+      if (!this.audio.paused) {
+        let barlen = document.querySelector('#bar').children[1].clientWidth
+        this.pro.style.width = this.point.style.left = e.layerX + 'px'
+        this.audio.currentTime = Math.floor(e.layerX / barlen * this.audio.duration)
+      }
+    },
+    _audioEnded () {
+      this._pause()
+    },
+    _changeVoice (e) {
+      this.voicepro.style.width = e.layerX + 'px'
+      this.audio.volume = e.layerX / this.voiceprobg.clientWidth
     }
   },
   created () {
@@ -76,10 +118,21 @@ export default{
     this.prevmusic = document.querySelector('#prevmusic')
     this.playmusic = document.querySelector('#playmusic')
     this.nextmusic = document.querySelector('#nextmusic')
+    this.playmusic.addEventListener('click', this._changeStatus, false)
+    this.pro = document.querySelector('.progress')
+    this.probg = document.querySelector('#bar > div')
+    this.point = document.querySelector('#point')
     this.audio.addEventListener('timeupdate', this.updateProgress, false)
     this.audio.addEventListener('canplay', this._audioPlay, false)
     this.audio.addEventListener('pause', this.audioPause, false)
-    this.audio.addEventListener('ended', this.audioEnded, false)
+    this.audio.addEventListener('ended', this._audioEnded, false)
+    // this.point.addEventListener('mousedown', function () { this.press = true }.bind(this), false)
+    // this.point.addEventListener('mouseup', function () { this.press = false }.bind(this), false)
+    // this.point.addEventListener('mousemove', function (e) { if (this.press) { console.log('213'); this._movebar(e) } }.bind(this), false)
+    this.probg.addEventListener('click', this._movebar, false)
+    this.voicepro = document.querySelector('.v_progress')
+    this.voiceprobg = document.querySelector('#vbar')
+    this.voiceprobg.addEventListener('click', this._changeVoice, false)
   }
 }
 </script>
@@ -137,6 +190,7 @@ export default{
     background: gray;
     position: relative;
     border-radius: 5px;
+    cursor: pointer;
 }
 #bar > div > i#point{
     position: absolute;
@@ -146,20 +200,21 @@ export default{
     display: block;
     top: 50%;
     left: 0;
-    background: white;
+    background: blue;
     transform: translate(0, -5px);
+    cursor: pointer;
 }
 i#point::after{
     content: "";
     display: block;
     position: absolute;
-    width: 7px;
-    height: 7px;
+    width: 5px;
+    height: 5px;
     border-radius: 100%;
     background: orange;
     top: 50%;
     left: 50%;
-    transform: translate(-3.5px, -3.5px);
+    transform: translate(-2.5px, -2.5px);
 }
 #voice{
     display: flex;
@@ -202,6 +257,13 @@ i#point::after{
   background: green;
   border-radius: 5px;
   height: 5px;
+  width: 0;
+}
+
+.v_progress{
+  height: 5px;
+  background: orange;
+  border-radius: 7px;
   width: 0;
 }
 </style>

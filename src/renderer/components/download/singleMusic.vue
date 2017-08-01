@@ -5,7 +5,7 @@
         <span>存储目录：{{saveDir}}</span><span @click="openDir">打开目录</span>
       </div>
       <div>
-        <input type="text" placeholder="搜索我下载的音乐">
+        <input type="text" placeholder="搜索我下载的音乐" v-model="musicname">
       </div>
     </div>
     <div id="music_list">
@@ -16,7 +16,7 @@
             <th>大小</th>
           </thead>
           <tbody>
-            <tr  v-for = "(item, index) in musicList" @dblclick="playMusic(item.path, $event)">
+            <tr  v-for = "(item, index) in list" @dblclick="playMusic(item.path, $event)">
               <td>{{index+1}}</td>
               <td>{{item.name}}</td>
               <td>{{item.size}}</td>
@@ -37,7 +37,8 @@ export default{
     return {
       saveDir: config.getValue('downloadDir'),
       musicList: null,
-      musicSrc: null
+      musicSrc: null,
+      musicname: ''
     }
   },
   methods: {
@@ -52,6 +53,14 @@ export default{
     this.musicList = Tool.getMP3('E:/CloudMusic/music')
   },
   mounted () {
+  },
+  computed: {
+    list () {
+      return this.musicList.filter(function (item) {
+        // console.log(name)
+        return item.name.toLowerCase().indexOf(this.musicname.toLowerCase()) !== -1
+      }.bind(this))
+    }
   }
 }
 
@@ -100,21 +109,18 @@ export default{
     }
     #music_list  tr{
       cursor: pointer;
+      transition: all .5s ease;
     }
     #music_list   tr:nth-child(even){
-      background-color: cadetblue;
-      opacity: .6;
+      background-color: rgba(27, 86, 2, 0.43);
     }
     #music_list   tr:nth-child(even):hover{
-      background-color: cadetblue;
-      opacity: 1;
+      background-color: rgba(27, 86, 2, .7);
     }
     #music_list   tr:nth-child(odd){
-      background-color: bisque;
-      opacity: .6;
+      background-color: rgba(128, 36, 36, 0.56);
     }
     #music_list   tr:nth-child(odd):hover{
-      background-color: bisque;
-      opacity: 1;
+      background-color: rgba(128, 36, 36, 0.7);
     }
 </style>
