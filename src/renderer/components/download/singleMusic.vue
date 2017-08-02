@@ -57,7 +57,6 @@ export default{
   computed: {
     list () {
       return this.musicList.filter(function (item) {
-        // console.log(name)
         return item.name.toLowerCase().indexOf(this.musicname.toLowerCase()) !== -1
       }.bind(this))
     }

@@ -25,7 +25,9 @@
             <span>词</span>
             <span><i class="fa fa-list-alt" aria-hidden="true"></i></span>
         </div>
-        <input id="file" type="file" style="display:none">
+        <div id="time">
+          
+        </div>
     </div>
 </template>
 
@@ -107,6 +109,19 @@ export default{
     _changeVoice (e) {
       this.voicepro.style.width = e.layerX + 'px'
       this.audio.volume = e.layerX / this.voiceprobg.clientWidth
+    },
+    _showTime (e) {
+      if (!this.audio.paused) {
+        let time = this._parseTime(this.audio.duration / this.probg.clientWidth * e.layerX)
+        let T = document.querySelector('#time')
+        T.innerText = time
+        T.style.left = (e.pageX - 10) + 'px'
+        console.log(e)
+      }
+    },
+    _hideTime () {
+      let T = document.querySelector('#time')
+      T.style.left = '-100px'
     }
   },
   created () {
@@ -126,10 +141,9 @@ export default{
     this.audio.addEventListener('canplay', this._audioPlay, false)
     this.audio.addEventListener('pause', this.audioPause, false)
     this.audio.addEventListener('ended', this._audioEnded, false)
-    // this.point.addEventListener('mousedown', function () { this.press = true }.bind(this), false)
-    // this.point.addEventListener('mouseup', function () { this.press = false }.bind(this), false)
-    // this.point.addEventListener('mousemove', function (e) { if (this.press) { console.log('213'); this._movebar(e) } }.bind(this), false)
     this.probg.addEventListener('click', this._movebar, false)
+    this.probg.addEventListener('mousemove', this._showTime, false)
+    this.probg.addEventListener('mouseleave', this._hideTime, false)
     this.voicepro = document.querySelector('.v_progress')
     this.voiceprobg = document.querySelector('#vbar')
     this.voiceprobg.addEventListener('click', this._changeVoice, false)
@@ -266,4 +280,30 @@ i#point::after{
   border-radius: 7px;
   width: 0;
 }
+
+#time {
+  width: 24px;
+  height: 14px;
+  background: rgba(0, 0, 0, .5);
+  color: white;
+  position: fixed;
+  bottom: 34px;
+  left: -100px;
+  text-align: center;
+  font-size: 10px;
+}
+
+#time::after{
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid rgba(0, 0, 0, .5);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-7px, 6px);
+}
+
 </style>
