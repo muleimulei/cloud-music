@@ -75,13 +75,13 @@ export default {
  
 <style>
 @import 'fontawesome/css/font-awesome.css';
-#brand{
+#brand, #brand > span{
   -webkit-app-region: drag;
 }
 .max{
   margin-right: auto !important;
 }
-ul{
+header ul{
   display: flex;
   list-style: none;
   background: rgb(208, 25, 25);
@@ -93,10 +93,10 @@ ul{
   height: 30px;
   border-radius: 50%;
 }
-li, li> *{
+header li, li> *{
   -webkit-app-region: no-drag;
 }
-ul > li:nth-child(1){
+header ul > li:nth-child(1){
   padding: 6px;
   font-size: 1.1em;
   font-weight: 500;
@@ -104,7 +104,7 @@ ul > li:nth-child(1){
   cursor: pointer;
 }
 
-ul > li:nth-child(2){
+header ul > li:nth-child(2){
   margin: 8px 9px;
   border: 1px solid rgba(0, 0, 0, .5);
   width: 60px;
@@ -112,7 +112,7 @@ ul > li:nth-child(2){
   display: flex;
   color: black;
 }
-ul > li:nth-child(2) > a {
+header ul > li:nth-child(2) > a {
   color: white;
   border: none;
   padding-top: 3px;
@@ -123,14 +123,14 @@ ul > li:nth-child(2) > a {
   text-align: center;
   text-decoration: none;
 }
-ul > li:nth-child(2) > a:active{
+header ul > li:nth-child(2) > a:active{
   opacity: .2;
 }
-ul > li:nth-child(3){
+header ul > li:nth-child(3){
   margin: 9px 9px;
   position: relative;
 }
-ul > li:nth-child(3) > input{
+header ul > li:nth-child(3) > input{
   font-size: 12px;
   width: 200px;
   height: 21px;
@@ -142,7 +142,7 @@ ul > li:nth-child(3) > input{
   margin-right: 200px;
   outline: none;
 }
-ul > li:nth-child(3)::after{
+header ul > li:nth-child(3)::after{
   content: '\f002';
   font: normal normal normal 14px/1 FontAwesome;
   display: inline-block;
@@ -153,23 +153,23 @@ ul > li:nth-child(3)::after{
   right: 215px;
   top: 4px;
 }
-ul > li:nth-child(4){
+header ul > li:nth-child(4){
   display: flex;
   align-items: center;
   /* align-self: right; */
 }
-ul > li:nth-child(4) > span{
+header ul > li:nth-child(4) > span{
   margin-left: 3px;
   font-size: .8em;
   opacity: .7;
   position: relative;
 
 }
-ul > li:nth-child(4) > span:hover{
+header ul > li:nth-child(4) > span:hover{
   opacity: 1;
   cursor: pointer;
 }
-ul > li:nth-child(4) > span::after{
+header ul > li:nth-child(4) > span::after{
   content: '';
   position: absolute;
   display: block;
@@ -183,33 +183,33 @@ ul > li:nth-child(4) > span::after{
   top: 6px;
 }
 
-ul > li:nth-child(5){
+header ul > li:nth-child(5){
   margin: 10px 35px;
   cursor: pointer;
   opacity: .7;
 }
-ul > li:nth-child(5):hover{
+header ul > li:nth-child(5):hover{
   opacity: 1;
 }
 
-ul > li:nth-child(6){
+header ul > li:nth-child(6){
   margin: 10px 0px;
   cursor: pointer;
   opacity: .7;
 }
-ul > li:nth-child(6):hover{
+header ul > li:nth-child(6):hover{
   opacity: 1;
 }
 
-ul > li:nth-child(7){
+header ul > li:nth-child(7){
   margin: 10px 30px;
   cursor: pointer;
   opacity: .7;
 }
-ul > li:nth-child(7):hover{
+header ul > li:nth-child(7):hover{
   opacity: 1;
 }
-ul > li:nth-child(8)::after{
+header ul > li:nth-child(8)::after{
   content: "";
   margin: 8px 0;
   display: inline-block;
@@ -218,36 +218,36 @@ ul > li:nth-child(8)::after{
   background: rgba(0, 0, 0, .5);
 }
 
-ul > li:nth-child(9){
+header ul > li:nth-child(9){
   margin: 10px 20px;
   cursor: pointer;
   opacity: .7;
 }
 
-ul > li:nth-child(7) > a{
+header ul > li:nth-child(7) > a{
   color: white;
   text-decoration: none;
 }
 
-ul > li:nth-child(9):hover{
+header ul > li:nth-child(9):hover{
   opacity: 1;
 }
-ul > li:nth-child(10){
+header ul > li:nth-child(10){
   margin: 10px 0px;
   cursor: pointer;
   opacity: .7;
 }
-ul > li:nth-child(10):hover{
+header ul > li:nth-child(10):hover{
   opacity: 1;
 }
 
-ul > li:nth-child(11){
+header ul > li:nth-child(11){
   margin: 10px 15px;
   cursor: pointer;
   opacity: .7;
   align-self: right;
 }
-ul > li:nth-child(11):hover{
+header ul > li:nth-child(11):hover{
   opacity: 1;
 }
 </style>

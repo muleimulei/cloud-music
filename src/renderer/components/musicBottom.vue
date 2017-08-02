@@ -14,7 +14,7 @@
             <span>{{totalTime}}</span>
         </div>
         <div id="voice">
-            <div id="vbar">
+            <div id="vbar" title="音量调节">
                 <div class="v_progress"></div>
             </div>
         </div>
@@ -23,10 +23,22 @@
                 <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
             </span>
             <span>词</span>
-            <span><i class="fa fa-list-alt" aria-hidden="true"></i></span>
+            <span id="mlist" title="打开音乐列表">
+              <i class="fa fa fa-list-ul" aria-hidden="true"></i>
+              <span>{{this.musiclist===null?0:this.musiclist.length}}</span>
+            </span>
         </div>
-        <div id="time">
-          
+        <div id="time"></div>
+        <div id="playlist" class="listhide">
+          <div>
+            播放列表
+          </div>
+          <ul>
+            <li v-for = 'item in musiclist'>
+              <span>{{item.name}}</span>
+              <span>{{item.size}}</span>
+            </li>
+          </ul>
         </div>
     </div>
 </template>
@@ -47,7 +59,8 @@ export default{
       point: null,  // 按钮
       probg: null,
       voicepro: null,
-      voiceprobg: null
+      voiceprobg: null,
+      musiclist: null //  播放列表
     }
   },
   methods: {
@@ -122,17 +135,28 @@ export default{
     _hideTime () {
       let T = document.querySelector('#time')
       T.style.left = '-100px'
+    },
+    _toggleList () {
+      let list = document.querySelector('#playlist').classList
+      if (list.contains('listhide')) {
+        list.remove('listhide')
+        list.add('listshow')
+      } else {
+        list.remove('listshow')
+        list.add('listhide')
+      }
     }
   },
   created () {
-    this.$root.eventHub.$on('playmusic', function (s) {
+    this.$root.eventHub.$on('playmusic', function (s, list) {
       this.handleData(s)
+      this.musiclist = [].slice.call(list)
     }.bind(this))
   },
   mounted () {
-    this.prevmusic = document.querySelector('#prevmusic')
-    this.playmusic = document.querySelector('#playmusic')
-    this.nextmusic = document.querySelector('#nextmusic')
+    this.prevmusic = document.querySelector('#prevmusic') //  播放上一首音乐
+    this.playmusic = document.querySelector('#playmusic') //  播放/暂停音乐
+    this.nextmusic = document.querySelector('#nextmusic') //  播放下一首音乐
     this.playmusic.addEventListener('click', this._changeStatus, false)
     this.pro = document.querySelector('.progress')
     this.probg = document.querySelector('#bar > div')
@@ -147,17 +171,64 @@ export default{
     this.voicepro = document.querySelector('.v_progress')
     this.voiceprobg = document.querySelector('#vbar')
     this.voiceprobg.addEventListener('click', this._changeVoice, false)
+
+    let mlist = document.querySelector('#mlist')
+    mlist.addEventListener('click', this._toggleList, false)
   }
 }
 </script>
 
 <style>
+
+#playlist {
+  position: fixed;
+  bottom: 60px;
+  width: 40%;
+  height: 50%;
+  right: 10px;
+  box-shadow: -4px -3px 11px rgba(0, 0, 0, .5);
+  text-align: center;
+  border-radius: 5px;
+  transition: all .5s ease;
+  transform-origin: 100% 100%;
+}
+#playlist ul{
+  list-style: none;
+}
+
+#playlist li{
+  padding: 5px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 15px;
+}
+#playlist li:nth-child(2n){
+  background: rgba(112, 112, 112, .3);
+}
+#playlist li:hover{
+  background: rgba(112, 112, 112, .6);
+}
+
+
+.listshow {
+  transform: scale(1);
+}
+
+.listhide {
+  transform: scale(0);
+}
+
+
 @import './fontawesome/css/font-awesome.css';
 #bottom,#ctrl{
     display: flex;
     flex-direction: row;
 }
-
+#bottom *{
+  -webkit-app-region:  no-drag;
+}
 #ctrl{
     align-items: center;
     padding-left: 30px;
@@ -305,5 +376,12 @@ i#point::after{
   top: 50%;
   transform: translate(-7px, 6px);
 }
-
+#mlist{
+  background: #ccc;
+  padding: 0 5px;
+  cursor: pointer;
+}
+#mlist span{
+  font-size: 13px;
+}
 </style>

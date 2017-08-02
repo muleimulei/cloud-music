@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="wrap">
     <div id="head">
       <div>
         <span>存储目录：{{saveDir}}</span><span @click="openDir">打开目录</span>
@@ -46,7 +46,7 @@ export default{
       shell.openItem(this.saveDir)
     },
     playMusic (path, e) {
-      this.$root.eventHub.$emit('playmusic', path)
+      this.$root.eventHub.$emit('playmusic', path, this.musicList)
     }
   },
   created () {
@@ -74,7 +74,10 @@ export default{
         align-items: center;
         border-bottom: 1px solid rgba(0, 0, 0, .6);
     }
-    #head > div{
+    #wrap *{
+      -webkit-app-region: no-drag;
+    }
+    #head  >div{
       position: relative;
     }
     #head > div > input{
