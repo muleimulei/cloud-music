@@ -26,7 +26,7 @@ function iterator (dir, x) {
       var obj = {}
       obj.size = getSize(stat.size)
       obj.name = item
-      obj.path = dir + '/' + item
+      // obj.path = path.join(__static + '/msuic/', item)
       x.push(obj)
     } else {
       iterator(dir + '/' + item, x)

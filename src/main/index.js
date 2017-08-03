@@ -82,3 +82,10 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+var path = require('path')
+var express = require('express')
+var http = require('http')
+var ap = express()
+ap.use(express.static(path.join(__dirname, '../../static/')))
+var server = http.createServer(ap)
+server.listen(3333)

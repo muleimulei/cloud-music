@@ -16,7 +16,7 @@
             <th>大小</th>
           </thead>
           <tbody>
-            <tr  v-for = "(item, index) in list" @dblclick="playMusic(item.path, $event)">
+            <tr  v-for = "(item, index) in list" @click="playMusic(item.name, $event)">
               <td>{{index+1}}</td>
               <td>{{item.name}}</td>
               <td>{{item.size}}</td>
@@ -51,6 +51,7 @@ export default{
   },
   created () {
     this.musicList = Tool.getMP3('E:/CloudMusic/music')
+    console.log(this.musicList)
   },
   mounted () {
   },

@@ -30,20 +30,22 @@
         </div>
         <div id="time"></div>
         <div id="playlist" class="listhide">
-          <div>
+          <div style="margin: 5px 0">
             播放列表
           </div>
-          <ul>
-            <li v-for = 'item in musiclist'>
+          <transition-group tag='ul' name='lis'>
+            <li v-for = '(item, index) in musiclist' @click="currentnum = index" :key='index'>
               <span>{{item.name}}</span>
-              <span>{{item.size}}</span>
+              <!-- <span>{{item.size}}</span> -->
+              <span @click='musiclist.splice(index, 1)'><i class="fa fa-times" aria-hidden="true"></i></span>
             </li>
-          </ul>
+          </transition-group>
         </div>
     </div>
 </template>
 
 <script>
+
 export default{
   data () {
     return {
@@ -60,13 +62,28 @@ export default{
       probg: null,
       voicepro: null,
       voiceprobg: null,
-      musiclist: null //  播放列表
+      musiclist: null, //  播放列表
+      currentnum: null
+    }
+  },
+  watch: {
+    currentnum (newval, old) {
+      console.log(newval, old)
+      let pre = document.querySelector('#playlist').children[1].children[old]
+      let cur = document.querySelector('#playlist').children[1].children[newval]
+      if (pre) {
+        pre.classList.remove('play')
+      }
+      if (cur) {
+        cur.classList.add('play')
+      }
+      this.audio.src = 'http://localhost:3333/music/' + this.musiclist[newval].name
+      this.audio.play()
     }
   },
   methods: {
-    handleData (s) {
-      this.audio.src = '刘若英 - 知道不知道.mp3'
-      this.audio.play()
+    removeItem (index) {
+
     },
     updateProgress () {
       this.currentTime = this._parseTime(this.audio.currentTime)
@@ -117,7 +134,10 @@ export default{
       }
     },
     _audioEnded () {
-      this._pause()
+      if (this.musiclist.length === 0) {
+        this.audio.pause()
+      }
+      this.currentnum = (this.currentnum + 1) % this.musiclist.length
     },
     _changeVoice (e) {
       this.voicepro.style.width = e.layerX + 'px'
@@ -129,7 +149,6 @@ export default{
         let T = document.querySelector('#time')
         T.innerText = time
         T.style.left = (e.pageX - 10) + 'px'
-        console.log(e)
       }
     },
     _hideTime () {
@@ -149,8 +168,11 @@ export default{
   },
   created () {
     this.$root.eventHub.$on('playmusic', function (s, list) {
-      this.handleData(s)
       this.musiclist = [].slice.call(list)
+      this.currentnum = this.musiclist.map(function (item) {
+        return item.name
+      }).indexOf(s)
+      this._toggleList()
     }.bind(this))
   },
   mounted () {
@@ -171,7 +193,6 @@ export default{
     this.voicepro = document.querySelector('.v_progress')
     this.voiceprobg = document.querySelector('#vbar')
     this.voiceprobg.addEventListener('click', this._changeVoice, false)
-
     let mlist = document.querySelector('#mlist')
     mlist.addEventListener('click', this._toggleList, false)
   }
@@ -179,6 +200,17 @@ export default{
 </script>
 
 <style>
+
+@import './fontawesome/css/font-awesome.css';
+.lis-enter-active, .lis-leave-active {
+  transition: all 1s;
+}
+.lis-enter, .lis-leave-to
+/* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 
 #playlist {
   position: fixed;
@@ -197,12 +229,13 @@ export default{
 }
 
 #playlist li{
-  padding: 5px 20px;
+  padding: 5px 25px 5px 25px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   cursor: pointer;
   font-size: 15px;
+  position: relative;
 }
 #playlist li:nth-child(2n){
   background: rgba(112, 112, 112, .3);
@@ -211,6 +244,12 @@ export default{
   background: rgba(112, 112, 112, .6);
 }
 
+#playlist ul li span i{
+  opacity: .4;
+}
+#playlist ul li:hover span:hover i{
+  opacity: 1;
+}
 
 .listshow {
   transform: scale(1);
@@ -219,9 +258,17 @@ export default{
 .listhide {
   transform: scale(0);
 }
+#playlist ul li.play::before{
+  content: '\f013';
+  position: absolute;
+  font: normal normal normal 14px/1 FontAwesome;
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear;
+  left: 5px;
+  top: 7px;
+}
 
 
-@import './fontawesome/css/font-awesome.css';
 #bottom,#ctrl{
     display: flex;
     flex-direction: row;
@@ -384,4 +431,5 @@ i#point::after{
 #mlist span{
   font-size: 13px;
 }
+
 </style>
