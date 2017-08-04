@@ -164,6 +164,24 @@ export default{
         list.remove('listshow')
         list.add('listhide')
       }
+    },
+    _prevmusic () {
+      if (this.musiclist.length !== 0) {
+        if (this.currentnum === 0) {
+          this.currentnum = this.musiclist.length - 1
+        } else {
+          this.currentnum -= 1
+        }
+      }
+    },
+    _nextmusic () {
+      if (this.musiclist.length !== 0) {
+        if (this.currentnum === this.musiclist.length - 1) {
+          this.currentnum = 0
+        } else {
+          this.currentnum += 1
+        }
+      }
     }
   },
   created () {
@@ -193,6 +211,8 @@ export default{
     this.voicepro = document.querySelector('.v_progress')
     this.voiceprobg = document.querySelector('#vbar')
     this.voiceprobg.addEventListener('click', this._changeVoice, false)
+    this.prevmusic.addEventListener('click', this._prevmusic, false)
+    this.nextmusic.addEventListener('click', this._nextmusic, false)
     let mlist = document.querySelector('#mlist')
     mlist.addEventListener('click', this._toggleList, false)
   }

@@ -2,7 +2,7 @@
     <div>
         <dl id="tuijian">
             <dt>推荐</dt>
-            <dd class="thickBG"><router-link to="/main/findMusic">发现音乐</router-link></dd>
+            <dd class="thickBG"><router-link to="/main/findMusic/tuijian">发现音乐</router-link></dd>
             <dd><router-link to="/main/privateFM"> 私人FM</router-link></dd>
             <dd><router-link to="/main/findMV">MV</router-link></dd>
             <dd><router-link to="/main/findFriend">朋友</router-link></dd>

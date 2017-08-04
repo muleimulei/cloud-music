@@ -12,7 +12,25 @@ export default new Router({
       children: [
         {
           path: 'findMusic',
-          component: require('@/components/findMusic')
+          component: require('@/components/findMusic'),
+          children: [
+            {
+              path: 'tuijian',
+              component: require('@/components/findmusic/tuijian')
+            },
+            {
+              path: 'musicpaper',
+              component: require('@/components/findmusic/musicpaper')
+            },
+            {
+              path: 'newmusic',
+              component: require('@/components/findmusic/newmusic')
+            },
+            {
+              path: '*',
+              redirect: '/main/findMusic/tuijian'
+            }
+          ]
         },
         {
           path: 'privateFM',
@@ -52,7 +70,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/main/findMusic'
+      redirect: '/main/findMusic/tuijian'
     },
     {
       path: '/settings',
