@@ -13,10 +13,21 @@
 export default{
   data () {
     return {
-
     }
   },
   methods: {
+    toggleCalss (e) {
+      console.log(e)
+    },
+    mounted () {
+      let click = new MouseEvent('click', {
+        'view': window,
+        'bubble': false,
+        'cancelable': true
+      })
+      let li1 = document.querySelector('#findmusic li')
+      li1.dispatchEvent(click)
+    }
   }
 }
 </script>
@@ -50,7 +61,7 @@ export default{
   padding: 10px 0;
   display: inline-block;
 }
-.router-link-active{
+#findmusic .router-link-active{
   color: #d09435;
   border-bottom: 2px solid #d09435;
 }

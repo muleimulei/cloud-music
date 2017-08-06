@@ -1,0 +1,118 @@
+extend ../layout.pug
+
+block content
+    h1= title
+    div#wrapper
+        <form enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="name">歌曲名称</label>
+            <input type="text" class="form-control" name="music[title]" placeholder="歌曲名称" id="name" required>
+          </div>
+          <div class="form-group">
+            <label for="author">作者</label>
+            <input type="text" class="form-control" name="music[author]" placeholder="歌曲作者" id="author" required>
+          </div>
+          <div class="form-group">
+            <label for="language">语言</label>
+            <input type="text" class="form-control" name="music[language]" placeholder="语言" id="language" required>
+          </div>
+          <div class="form-group">
+            <label for="pic">歌曲图片</label>
+            <input type="file" name="pic" id='pic' required>
+            img(src="", alt="", id="image")
+            br
+            <label for="file">歌曲文件</label>
+            <input type="file" id="file" name="file" required>
+            audio(src="",id="music", controls)
+          </div>
+          div#progress
+            div#step
+          span#pro
+          br
+          <button type="submit" class="btn btn-default" id='submit'>Submit</button>
+        </form>
+
+    style.
+        h1{
+            text-align: center;
+        }
+        #wrapper{
+            width: 80%;
+            margin: auto;
+        }
+        #progress{
+            height: 5px;
+            width: 500px;
+            border-radius: 10px/8px;
+            background-color: gray;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        #image{
+            width: 200px;
+            height: 200px;
+        }
+        input{
+            display: inline-block !important;
+        }
+        audio{
+            position: relative;
+            top: 10px;
+            left: -20px;
+            background-color: rgba(0,0,0,.6);
+        }
+        #step{
+            height: 5px;
+            background-color: green;
+            width: 0;
+        }
+    script.
+        
+        var name = $("#name")
+        var author = $('#author')
+        var lan = $('#language')
+        
+        var file = $('#file')[0];
+        var image = $('#image')[0];
+        var music = $('#music')[0];
+        var xhr = new XMLHttpRequest()
+
+        $('#pic').bind('change', function (event) {
+            var reader = new FileReader();
+             reader.onload = function (event) {
+                 image.src = event.target.result;
+             };
+             reader.readAsDataURL(event.target.files[0]);
+        })
+        $('#file').bind('change', function (event) {
+            var reader = new FileReader();
+             reader.onload = function (event) {
+                music.src = event.target.result
+             };
+             reader.readAsDataURL(event.target.files[0]);
+        })
+        $('#submit').bind('click', function (e) {
+            e.preventDefault();
+            var formData = new FormData();
+            formData.append('file', file.files[0]);
+            formData.append('name', name.val());
+            formData.append('author', author.val());
+            formData.append('language', lan.val());
+            formData.append('pic', image.src);
+
+            xhr.onload = uploadSuccess;
+            xhr.upload.onprogress = setProgress;
+            xhr.open('post','/admin/upload/music');
+            xhr.send(formData);
+        })
+        
+        function uploadSuccess () {
+            if(xhr.readyState==4){
+                console.log(xhr.responseText);
+            }
+        }
+        
+        
+
+        
+        

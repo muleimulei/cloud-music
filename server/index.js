@@ -1,15 +1,28 @@
 var express = require('express');
 var app = express();
+var config = require('./config.js')
 var path = require('path');
+var mongoose = require('mongoose');
+    DB_URL = 'mongodb://' + config.host + ':' + config.port + '/' + config.database
+
+mongoose.connect(DB_URL);
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose connection open to '+ DB_URL)
+})
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', function (req, res, next) {
-    res.end("hello");
+app.use('/admin/addmusic', function (req, res, next) {
+    res.render('pages/addmusic',{
+      title: '添加音乐'
+    });
 });
+app.use('/admin/upload', require('./routes/upload.js'));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
