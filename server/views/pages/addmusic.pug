@@ -6,15 +6,15 @@ block content
         <form enctype="multipart/form-data">
           <div class="form-group">
             <label for="name">歌曲名称</label>
-            <input type="text" class="form-control" name="music[title]" placeholder="歌曲名称" id="name" required>
+            <input type="text" class="form-control"  placeholder="歌曲名称" id="name" required>
           </div>
           <div class="form-group">
             <label for="author">作者</label>
-            <input type="text" class="form-control" name="music[author]" placeholder="歌曲作者" id="author" required>
+            <input type="text" class="form-control"  placeholder="歌曲作者" id="author" required>
           </div>
           <div class="form-group">
             <label for="language">语言</label>
-            <input type="text" class="form-control" name="music[language]" placeholder="语言" id="language" required>
+            <input type="text" class="form-control"  placeholder="语言" id="language" required>
           </div>
           <div class="form-group">
             <label for="pic">歌曲图片</label>
@@ -65,17 +65,16 @@ block content
             height: 5px;
             background-color: green;
             width: 0;
+            border-radius: 10px/8px;
         }
     script.
-        
-        var name = $("#name")
-        var author = $('#author')
-        var lan = $('#language')
         
         var file = $('#file')[0];
         var image = $('#image')[0];
         var music = $('#music')[0];
-        var xhr = new XMLHttpRequest()
+        var xhr = new XMLHttpRequest();
+        var span = $('#pro')[0];
+        var step = $('#step');
 
         $('#pic').bind('change', function (event) {
             var reader = new FileReader();
@@ -95,10 +94,15 @@ block content
             e.preventDefault();
             var formData = new FormData();
             formData.append('file', file.files[0]);
-            formData.append('name', name.val());
-            formData.append('author', author.val());
-            formData.append('language', lan.val());
+            formData.append('name', $("#name").val());
+            formData.append('author', $('#author').val());
+            formData.append('language', $('#language').val());
             formData.append('pic', image.src);
+
+            if(file.value==='' || image.value===''){
+                alert('请选择文件');
+                return;
+            }
 
             xhr.onload = uploadSuccess;
             xhr.upload.onprogress = setProgress;
@@ -112,7 +116,8 @@ block content
             }
         }
         
-        
-
-        
-        
+        function setProgress () {
+            var complete = Number.parseInt(event.loaded / event.total * 100);
+            span.innerHTML = complete + '%';
+            step.width(complete/100 * $('#progress').width() + 'px');
+        }
