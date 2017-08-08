@@ -5,7 +5,8 @@ var mongoose  = require('mongoose'),
 let songlist = new Schema({
   pic: String,  //图片
   language: String, //语言
-  createTime: Date,   //创建日期
+  createtime: Date,   //创建日期
+  updatetime: Date,
   title: String,  //歌单名称
   summary: String,  //简介
   keyword: [],  //标签
@@ -19,5 +20,13 @@ let songlist = new Schema({
     ref: 'customers'
   }
 })
+songlist.pre('save',function(next){
+  if(this.isNew){
+    this.createtime = this.updatetime = Date.now();
+  }else{
+    this.updatetime = Date.now();
+  }
+  next();
+});
 
 module.exports = mongoose.model('songlists', music)

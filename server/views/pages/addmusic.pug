@@ -31,7 +31,6 @@ block content
           br
           <button type="submit" class="btn btn-default" id='submit'>Submit</button>
         </form>
-
     style.
         h1{
             text-align: center;
@@ -97,7 +96,7 @@ block content
             formData.append('name', $("#name").val());
             formData.append('author', $('#author').val());
             formData.append('language', $('#language').val());
-            formData.append('pic', image.src);
+            formData.append('pic', $('#pic')[0].files[0]);
 
             if(file.value==='' || image.value===''){
                 alert('请选择文件');
@@ -113,6 +112,7 @@ block content
         function uploadSuccess () {
             if(xhr.readyState==4){
                 console.log(xhr.responseText);
+                alert('上传成功');
             }
         }
         
