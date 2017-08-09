@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var config = require('./config.js')
 var path = require('path');
+var songList = require('./db/songlist.js');
+
 var mongoose = require('mongoose');
     DB_URL = 'mongodb://' + config.host + ':' + config.port + '/' + config.database
 
@@ -17,10 +19,19 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin/addmusic', function (req, res, next) {
-    res.render('pages/addmusic',{
-      title: '添加音乐'
+  songList.find({}, '_id title', function (err, docs) {
+      res.render('pages/addmusic',{
+        title: '添加音乐',
+        list: docs
     });
+  })
 });
+app.use('/admin/addsonglist', function (req, res, next){
+  res.render('pages/addsonglist',{
+    title: '添加歌单'
+  });
+})
+
 app.use('/admin/upload', require('./routes/upload.js'));
 
 // catch 404 and forward to error handler

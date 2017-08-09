@@ -4,17 +4,21 @@ var mongoose  = require('mongoose'),
 
 let songlist = new Schema({
   pic: String,  //图片
-  language: String, //语言
   createtime: Date,   //创建日期
   updatetime: Date,
   title: String,  //歌单名称
   summary: String,  //简介
-  keyword: [],  //标签
+  keyword: [{
+    type: String
+  }],  //标签
   list: [{
     type: Schema.Types.ObjectId,
     ref: 'musics'
   }],
-  playNum: Number,  //播放次数
+  playNum: {
+    type: Number,
+    default: 0
+  },
   owner: {  //创建者
     type: Schema.Types.ObjectId,
     ref: 'customers'
@@ -29,4 +33,4 @@ songlist.pre('save',function(next){
   next();
 });
 
-module.exports = mongoose.model('songlists', music)
+module.exports = mongoose.model('songlists', songlist)

@@ -5,31 +5,21 @@ block content
     div#wrapper
         <form enctype="multipart/form-data">
           <div class="form-group">
-            <label for="name">歌曲名称</label>
-            <input type="text" class="form-control"  placeholder="歌曲名称" id="name" required>
+            <label for="name">歌单名称</label>
+            <input type="text" class="form-control"  placeholder="歌单名称" id="name" required>
           </div>
           <div class="form-group">
-            <label for="author">作者</label>
-            <input type="text" class="form-control"  placeholder="歌曲作者" id="author" required>
+            <label for="author">关键字</label>
+            <input type="text" class="form-control"  placeholder="关键字" id="keyword" required>
           </div>
           <div class="form-group">
-            <label for="language">语言</label>
-            <input type="text" class="form-control"  placeholder="语言" id="language" required>
+            <label for="language">简介</label>
+            <textarea type="text" class="form-control"  placeholder="简介" id="summary" required></textarea>
           </div>
           <div class="form-group">
-            <label for="list">歌单</label>
-            select(name="songlist", id='list')
-                each item in list
-                    option(value=item._id,class="form-control")= item.title
-          </div>
-          <div class="form-group">
-            <label for="pic">歌曲图片</label>
+            <label for="pic">歌单图片</label>
             <input type="file" name="pic" id='pic' required>
             img(src="", alt="", id="image")
-            br
-            <label for="file">歌曲文件</label>
-            <input type="file" id="file" name="file" required>
-            audio(src="",id="music", controls)
           </div>
           div#progress
             div#step
@@ -74,9 +64,7 @@ block content
         }
     script.
         
-        var file = $('#file')[0];
         var image = $('#image')[0];
-        var music = $('#music')[0];
         var xhr = new XMLHttpRequest();
         var span = $('#pro')[0];
         var step = $('#step');
@@ -88,31 +76,22 @@ block content
              };
              reader.readAsDataURL(event.target.files[0]);
         })
-        $('#file').bind('change', function (event) {
-            var reader = new FileReader();
-             reader.onload = function (event) {
-                music.src = event.target.result
-             };
-             reader.readAsDataURL(event.target.files[0]);
-        })
         $('#submit').bind('click', function (e) {
             e.preventDefault();
             var formData = new FormData();
-            formData.append('file', file.files[0]);
             formData.append('name', $("#name").val());
-            formData.append('author', $('#author').val());
-            formData.append('language', $('#language').val());
+            formData.append('keyword', $('#keyword').val());
+            formData.append('summary', $('#summary').val());
             formData.append('pic', $('#pic')[0].files[0]);
-            formData.append('songlist', $('#list').val());
 
-            if(file.value==='' || image.value===''){
+            if(image.value===''){
                 alert('请选择文件');
                 return;
             }
 
             xhr.onload = uploadSuccess;
             xhr.upload.onprogress = setProgress;
-            xhr.open('post','/admin/upload/music');
+            xhr.open('post','/admin/upload/songlist');
             xhr.send(formData);
         })
         

@@ -1,6 +1,6 @@
 <template>
     <div id="findmusic">
-        <ul>
+        <ul id="tool">
             <li> <router-link to='/main/findmusic/tuijian'>个性推荐</router-link></li>
             <li> <router-link to='/main/findmusic/musicpaper' > 歌单 </router-link></li>
             <li> <router-link to='/main/findmusic/newmusic' > 最新音乐 </router-link></li>
@@ -13,21 +13,24 @@
 export default{
   data () {
     return {
+      currentItem: null
     }
   },
   methods: {
-    toggleCalss (e) {
-      console.log(e)
-    },
-    mounted () {
-      let click = new MouseEvent('click', {
-        'view': window,
-        'bubble': false,
-        'cancelable': true
+  },
+  mounted () {
+    this.currentItem = document.querySelector('#tool li')
+    this.currentItem.classList.add('active')
+    let vue = this
+    let lis = document.querySelectorAll('#findmusic #tool li')
+    lis[1].style = 'padding: 0 16px'
+    lis.forEach(function (li) {
+      li.addEventListener('click', function () {
+        this.classList.add('active')
+        vue.currentItem.classList.remove('active')
+        vue.currentItem = this
       })
-      let li1 = document.querySelector('#findmusic li')
-      li1.dispatchEvent(click)
-    }
+    })
   }
 }
 </script>
@@ -55,13 +58,13 @@ export default{
 #findmusic ul li a:hover{
   color: #d09435;
 }
-#findmusic a{
+#findmusic #tool  a{
   text-decoration: none;
   color: black;
   padding: 10px 0;
   display: inline-block;
 }
-#findmusic .router-link-active{
+.active{
   color: #d09435;
   border-bottom: 2px solid #d09435;
 }

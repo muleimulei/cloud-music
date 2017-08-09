@@ -71,6 +71,7 @@ export default{
       console.log(newval, old)
       let pre = document.querySelector('#playlist').children[1].children[old]
       let cur = document.querySelector('#playlist').children[1].children[newval]
+      console.log(pre, cur)
       if (pre) {
         pre.classList.remove('play')
       }
