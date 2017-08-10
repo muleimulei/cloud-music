@@ -45,7 +45,7 @@
 </template>
 
 <script>
-
+import config from '../../../config.js'
 export default{
   data () {
     return {
@@ -71,14 +71,14 @@ export default{
       console.log(newval, old)
       let pre = document.querySelector('#playlist').children[1].children[old]
       let cur = document.querySelector('#playlist').children[1].children[newval]
-      console.log(pre, cur)
+      // console.log(pre, cur)
       if (pre) {
         pre.classList.remove('play')
       }
       if (cur) {
         cur.classList.add('play')
       }
-      this.audio.src = 'http://localhost:3333/music/' + this.musiclist[newval].name
+      this.audio.src = `http://${config.getValue('host')}:${config.getValue('port')}/music/` + this.musiclist[newval].name
       this.audio.play()
     }
   },
@@ -192,6 +192,11 @@ export default{
         return item.name
       }).indexOf(s)
       this._toggleList()
+      this.$nextTick(function () {
+        let cur = document.querySelector('#playlist').children[1].children[this.currentnum]
+        cur.classList.add('play')
+        console.log(cur)
+      })
     }.bind(this))
   },
   mounted () {
@@ -216,6 +221,7 @@ export default{
     this.nextmusic.addEventListener('click', this._nextmusic, false)
     let mlist = document.querySelector('#mlist')
     mlist.addEventListener('click', this._toggleList, false)
+    //  渲染完成后执行
   }
 }
 </script>
@@ -229,10 +235,8 @@ export default{
 .lis-enter, .lis-leave-to
 /* .list-leave-active for below version 2.1.8 */ {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateX(-100px);
 }
-
-
 #playlist {
   position: fixed;
   bottom: 60px;
