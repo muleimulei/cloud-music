@@ -1,14 +1,20 @@
-# my-project
+# 我的云音乐
 
 > An electron-vue project
 
 #### Build Setup
 
 ``` bash
-# install dependencies
+# 首先下载到本地
+git clone https://github.com/muleimulei/cloud-music.git
+
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:9080
+# 先打开服务器(服务器监听3000端口)
+npm run server
+
+# serve with hot reload at localhost:9080（打开客户端）
 npm run dev
 
 # build electron application for production
@@ -19,6 +25,12 @@ npm run build
 npm run lint
 
 ```
+
+#### Express服务器说明
+
+#路由
+- /admin/addmusic : 添加歌曲
+- /admin/addsonglist : 添加歌单
 
 ---
 

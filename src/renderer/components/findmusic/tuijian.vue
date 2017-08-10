@@ -3,6 +3,7 @@
     <section id="tuijian">
         <header>
           <span>推荐歌单</span>
+          <span @click="gengduogedan">更多></span>
         </header>
         <div id="tuijiangedan">
           
@@ -12,7 +13,13 @@
 </template>
 
 <script>
-
+export default{
+  methods: {
+    gengduogedan () {
+      this.$root.eventHub.$emit('gengduogedan')
+    }
+  }
+}
 </script>
 
 <style>
@@ -28,5 +35,8 @@
   #maincontent header{
     border-bottom: 1px solid rgba(0, 0, 0, .3);
     padding: 10px 5px;
+  }
+  #maincontent header span:nth-child(2){
+    cursor: pointer;
   }
 </style>

@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var basicAuth = require('basic-auth');
 var config = require('./config.js')
 var path = require('path');
 var songList = require('./db/songlist.js');
@@ -17,6 +18,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/admin', function (req, res, next) {
+  function unauthorized(resp) {
+    resp.set('WWW-Authenticate', 'Basic realm=Input User&Password');
+    return resp.sendStatus(401);
+  }
+  let user = basicAuth(req);
+  if (!user | !user.name | !user.pass) {
+    unauthorized(res);
+  }
+  if (user.name==='user' && user.pass === '123') {
+    next();
+  }else{
+    unauthorized(res);
+  }
+});
 
 app.use('/admin/addmusic', function (req, res, next) {
   songList.find({}, '_id title', function (err, docs) {

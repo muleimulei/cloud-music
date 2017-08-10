@@ -18,6 +18,19 @@ export default{
   },
   methods: {
   },
+  created () {
+    this.$root.eventHub.$on('gengduogedan', function () {
+      let li = document.querySelectorAll('#findmusic #tool li')[1].children[0]
+      //  调用document对象的 createEvent 方法得到一个event的对象实例。
+      var event = document.createEvent('HTMLEvents')
+      //  initEvent接受3个参数：
+      //  事件类型，是否冒泡，是否阻止浏览器的默认行为
+      event.initEvent('click', true, true)
+      event.eventType = 'message'
+      //  触发document上绑定的自定义事件ondataavailable
+      li.dispatchEvent(event)
+    })
+  },
   mounted () {
     this.currentItem = document.querySelector('#tool li')
     this.currentItem.classList.add('active')
