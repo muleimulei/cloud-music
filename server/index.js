@@ -25,7 +25,8 @@ app.use('/admin', function (req, res, next) {
     return resp.sendStatus(401);
   }
   let user = basicAuth(req);
-  if (!user | !user.name | !user.pass) {
+  console.log(user)
+  if (!user) {
     unauthorized(res);
   }
   if (user.name==='user' && user.pass === '123') {
@@ -51,12 +52,22 @@ app.use('/admin/addsonglist', function (req, res, next){
 
 app.use('/admin/upload', require('./routes/upload.js'));
 
+// api操作
+app.use('/api', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+} ,require('./routes/getmusic.js'));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
