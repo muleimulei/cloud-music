@@ -51,8 +51,9 @@ export default{
 <style>
 #findmusic{
   background: white;
-  flex-grow: 1;
   padding: 0 10px;
+  width: 84%;
+  overflow-x: hidden;
 }
 #findmusic *{
   -webkit-app-region: no-drag;

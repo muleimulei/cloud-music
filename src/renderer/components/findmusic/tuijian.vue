@@ -7,9 +7,9 @@
         </header>
         <div id="tuijiangedan">
           <div class="item" v-for="n in 10">
-            <img src="" alt="">
+            <img :src="musiclist[0].pic" alt="专辑图片">
             <div id="title"></div>
-            <span> <i class="fa fa-play-circle-o"></i> {{}}</span>
+            <span> <i class="fa fa-play-circle-o"></i></span>
           </div>
         </div>
     </section>
@@ -28,12 +28,14 @@ export default{
       this.$root.eventHub.$emit('gengduogedan')
     }
   },
-  mounted () {
-    this.$http.get('/getpartgedan').then(function (res) {
-      // console.log(res)
-      this.musiclist = res.data
-    }, function (err) {
-      console.log(err)
+  created () {
+    let vue = this
+    vue.$nextTick(function () {
+      this.$http.get('/getpartgedan').then(function (res) {
+        vue.musiclist = res.data
+      }, function (err) {
+        console.log(err)
+      })
     })
   }
 }
@@ -45,6 +47,7 @@ export default{
     flex-direction: row;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 5px;
   }
   #maincontent header a{
     color: black;
@@ -60,5 +63,17 @@ export default{
   #tuijiangedan{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+  }
+  #tuijiangedan .item{
+    width: 20%;
+    height: 200px;
+    padding: 5px;
+    overflow: hidden;
+    background: rgba(236, 227, 227, 0.5);
+    cursor: pointer;
+  }
+  #tuijiangedan .item img{
+    width: 100%;
   }
 </style>

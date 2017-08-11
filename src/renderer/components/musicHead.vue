@@ -9,7 +9,7 @@
         <a id="back" v-on:click.prevent="router.go(-1)" class="fa fa-chevron-left"></a>|
         <a id="forward" v-on:click.prevent="router.go(1)" class="fa fa-chevron-right"></a>
       </li>
-      <li :class="{max: maxed}">
+      <li :class="{max: maxed}" style="margin-right: auto">
         <input type="text" name="search" placeholder="搜索音乐，歌手，歌词，用户">
       </li>
       <li>
@@ -139,7 +139,7 @@ header ul > li:nth-child(3) > input{
   padding: 0 8px;
   color: white;
   background: rgba(0, 0, 0, .2);
-  margin-right: 200px;
+  /* margin-right: 200px; */
   outline: none;
 }
 header ul > li:nth-child(3)::after{
@@ -150,7 +150,7 @@ header ul > li:nth-child(3)::after{
   height: 5px;
   opacity: .6;
   position: absolute;
-  right: 215px;
+  right: 13px;
   top: 4px;
 }
 header ul > li:nth-child(4){
