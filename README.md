@@ -2,6 +2,11 @@
 
 > An electron-vue project
 
+界面如下：
+![界面1](截图1.jpg)
+
+![界面2](截图2.jpg)
+
 #### Build Setup
 
 ``` bash
@@ -32,6 +37,8 @@ npm run lint
 - /admin/addmusic : 添加歌曲
 - /admin/addsonglist : 添加歌单
 
+
+目前该项目尚未完工！！！！！！！
 ---
 
 This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
