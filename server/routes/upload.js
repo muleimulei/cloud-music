@@ -61,9 +61,9 @@ router.post('/music', upload.fields([{name: 'file', maxCount: 1}]) ,function (re
   })
 });
 
-router.post('/songlist', function (req, res, next) {
+router.post('/songlist', upload.none(),function (req, res, next) {
   //存储图片
-  // console.log(req.body, req.file)
+  console.log(req.body)
   // //处理图片
   // let pictail = req.file.originalname.slice(req.file.originalname.indexOf('.'));
   // let picBase = req.file.path + pictail;

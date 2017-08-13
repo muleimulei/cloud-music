@@ -12,7 +12,7 @@ router.get('/getpartgedan', function (req, res, next) {
             //     item.pic = `http://${config.listenhost}:${config.listenport}${item.pic}`
             //     return item
             // })
-            res.json(list)
+            res.json(docs)
         }
     })
 })

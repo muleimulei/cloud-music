@@ -78,6 +78,7 @@ export default{
   #tuijiangedan .item  img{
     width: 100%;
     transition: all .5s ease;
+    height: 100%;
   }
   #tuijiangedan #title{
     position: absolute;
@@ -138,7 +139,7 @@ export default{
   #tuijiangedan > .item > a{
     position: absolute;
     width: 95%;
-    height: 100%;
+    height: 95%;
     top: 5px;
     left: 5px;
     transition: all .5s ease;
