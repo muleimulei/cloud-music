@@ -5,11 +5,12 @@
           <span>推荐歌单</span>
           <span @click="gengduogedan">更多></span>
         </header>
-        <div id="tuijiangedan">
-          <div class="item" v-for="n in 10">
+        <div id="tuijiangedan" v-if="musiclist">
+          <div class="item" v-for="n in 15">
             <img :src="musiclist[0].pic" alt="专辑图片">
-            <div id="title"></div>
-            <span> <i class="fa fa-play-circle-o"></i></span>
+            <div id="title">{{ musiclist[0].title }}</div>
+            <span> <i class="fa fa-play-circle-o"></i>{{ musiclist[0].playNum }}</span>
+             <router-link :to="{name: 'gedan', params: {id: musiclist[0]._id}}"><i class="fa fa-play-circle-o"></i></router-link>
           </div>
         </div>
     </section>
@@ -70,10 +71,100 @@ export default{
     height: 200px;
     padding: 5px;
     overflow: hidden;
-    background: rgba(236, 227, 227, 0.5);
+    /* background: rgba(236, 227, 227, 0.5); */
     cursor: pointer;
+    position: relative;
+    box-sizing: 
   }
-  #tuijiangedan .item img{
+  #tuijiangedan .item  img{
     width: 100%;
+    transition: all .5s ease;
+  }
+  #tuijiangedan #title{
+    position: absolute;
+    width: 95%;
+    height: 37px;
+    top: -38px;
+    transition: all .5s ease;
+    left: 5px;
+    color: white;
+    padding: 3px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: .98rem;
+    background: rgba(0, 0, 0, .5);
+  }
+
+  #tuijiangedan .item:hover #title{
+    top: 5px;
+    z-index: 1;
+  }
+
+  #tuijiangedan .item span{
+    transition: all .5s ease;
+    opacity: .7;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: white;
+    font-size: 20px;
+    width: 95%;
+    text-align: right;
+    padding-right: 3px;
+    background-image: -webkit-linear-gradient(
+          to right,
+          rgba(255,255,255, .5) 70%,
+          rgba(0, 0, 0, .8) 100%
+      );
+    background-image: -o-linear-gradient(
+          to right,
+          rgba(255,255,255, .5) 70%,
+          rgba(0, 0, 0, .8) 100%
+      );
+    background-image: linear-gradient(
+          to right,
+          rgba(255,255,255, .5) 70%,
+          rgba(0, 0, 0, .8) 100%
+      );
+  }
+  #tuijiangedan .item span i{
+    margin: 0 3px;
+  }
+  #tuijiangedan .item:hover span{
+    top: -23px;
+  }
+
+  #tuijiangedan > .item > a{
+    position: absolute;
+    width: 95%;
+    height: 100%;
+    top: 5px;
+    left: 5px;
+    transition: all .5s ease;
+  }
+  #tuijiangedan > .item > a > i{
+    font-size: 60px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(0, 0, 0, 0);
+    transition: all .5s ease;
+    /* opacity: 0; */
+  }
+
+  #tuijiangedan > .item:hover > a{
+    background-image: linear-gradient(to top right, 
+        rgba(255, 255, 255, .6),
+        rgba(0, 0, 0, .9)
+      )
+  }
+  #tuijiangedan > .item:hover > a > i{
+    color: rgba(255, 255, 255, .6);
+  }
+  #tuijiangedan > .item:hover > a > i:hover{
+    color: rgba(0, 0, 0, .6);
   }
 </style>

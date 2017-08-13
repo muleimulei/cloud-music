@@ -33,6 +33,11 @@ export default new Router({
           ]
         },
         {
+          path: '/gedan/:id',
+          name: 'gedan',
+          component: require('@/components/musiclist/gedanmain')
+        },
+        {
           path: 'privateFM',
           component: require('@/components/privateFM')
         },
