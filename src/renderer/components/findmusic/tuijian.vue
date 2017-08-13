@@ -6,7 +6,7 @@
           <span @click="gengduogedan">更多></span>
         </header>
         <div id="tuijiangedan" v-if="musiclist">
-          <div class="item" v-for="n in 15">
+          <div class="item" v-for="n in 10">
             <img :src="musiclist[0].pic" alt="专辑图片">
             <div id="title">{{ musiclist[0].title }}</div>
             <span> <i class="fa fa-play-circle-o"></i>{{ musiclist[0].playNum }}</span>
@@ -71,10 +71,9 @@ export default{
     height: 200px;
     padding: 5px;
     overflow: hidden;
-    /* background: rgba(236, 227, 227, 0.5); */
     cursor: pointer;
     position: relative;
-    box-sizing: 
+    margin-top: 15px;
   }
   #tuijiangedan .item  img{
     width: 100%;

@@ -102,7 +102,8 @@ block content
             formData.append('name', $("#name").val());
             formData.append('author', $('#author').val());
             formData.append('language', $('#language').val());
-            formData.append('pic', $('#pic')[0].files[0]);
+            //- formData.append('pic', $('#pic')[0].files[0]);
+            formData.append('pic', image.src);
             formData.append('songlist', $('#list').val());
 
             if(file.value==='' || image.value===''){

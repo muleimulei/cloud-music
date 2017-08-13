@@ -82,8 +82,9 @@ block content
             formData.append('name', $("#name").val());
             formData.append('keyword', $('#keyword').val());
             formData.append('summary', $('#summary').val());
-            formData.append('pic', $('#pic')[0].files[0]);
-
+            //- formData.append('pic', $('#pic')[0].files[0]);
+            //  上传base64
+            formData.append('pic', image.src);
             if(image.value===''){
                 alert('请选择文件');
                 return;
