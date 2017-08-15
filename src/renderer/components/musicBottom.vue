@@ -135,8 +135,9 @@ export default{
       }
     },
     _audioEnded () {
-      if (this.musiclist.length === 0) {
-        this.audio.pause()
+      if (this.musiclist.length === 0 || this.musiclist.length === 1) {
+        this._pause()
+        return
       }
       this.currentnum = (this.currentnum + 1) % this.musiclist.length
     },

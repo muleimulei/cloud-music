@@ -39,7 +39,8 @@ router.post('/music', upload.fields([{name: 'file', maxCount: 1}]) ,function (re
     pic: req.body.pic,//('/pictures/' + req.files.pic[0].filename + pictail).trim(),    //歌曲图片
     author: req.body.author.trim(), //歌曲作者
     file_link: '/media/'+ req.files.file[0].filename + '.mp3',   //文件位置
-    language: req.body.language.trim()    //语言
+    language: req.body.language.trim(),    //语言
+    duration: req.body.duration
   });
 
   music.save(function(err, doc){

@@ -93,7 +93,7 @@ export default{
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    font-size: .98rem;
+    font-size: .95rem;
     background: rgba(0, 0, 0, .5);
   }
 

@@ -35,7 +35,23 @@ export default new Router({
         {
           path: '/gedan/:id',
           name: 'gedan',
-          component: require('@/components/musiclist/gedanmain')
+          component: require('@/components/musiclist/gedanmain'),
+          children: [
+            {
+              path: 'musictable',
+              name: 'musictable',
+              component: require('@/components/musiclist/musictable')
+            },
+            {
+              path: 'musiccomment',
+              name: 'musiccomment',
+              component: require('@/components/musiclist/musiccomment')
+            },
+            {
+              path: '*',
+              redirect: {name: 'musictable'}
+            }
+          ]
         },
         {
           path: 'privateFM',

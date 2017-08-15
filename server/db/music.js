@@ -9,7 +9,7 @@ let music = new Schema({
     file_link: String,   //文件位置
     language: String,    //语言
     album: String   //  专辑
-
+    duration: String // 时常
 })
 
 module.exports = mongoose.model('musics', music)

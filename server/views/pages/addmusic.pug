@@ -102,9 +102,9 @@ block content
             formData.append('name', $("#name").val());
             formData.append('author', $('#author').val());
             formData.append('language', $('#language').val());
-            //- formData.append('pic', $('#pic')[0].files[0]);
             formData.append('pic', image.src);
             formData.append('songlist', $('#list').val());
+            formData.append('duration', parseTime(music.duration));
 
             if(file.value==='' || image.value===''){
                 alert('请选择文件');
@@ -116,7 +116,17 @@ block content
             xhr.open('post','/admin/upload/music');
             xhr.send(formData);
         })
-        
+        function parseTime (time) {
+          let minute = parseInt(parseFloat(time) / 60)
+          let seconds = parseInt(time - minute * 60)
+          if (minute / 10 < 1) {
+            minute = '0' + minute
+          }
+          if (seconds / 10 < 1) {
+            seconds = '0' + seconds
+          }
+          return `${minute}:${seconds}`
+        },
         function uploadSuccess () {
             if(xhr.readyState==4){
                 console.log(xhr.responseText);
