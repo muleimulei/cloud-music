@@ -13,7 +13,7 @@
         <div id="tool">
           <div>
             <nav>播放全部</nav>
-            <nav>+</nav>
+            <nav @click="addTosonglist">+</nav>
           </div>
           <div>
             <nav>收藏</nav>
@@ -54,7 +54,8 @@
         picsrc: null,
         musiclist: null, //  数组
         keyword: null,
-        detail: null
+        detail: null,
+        added: false
       }
     },
     created () {
@@ -63,14 +64,16 @@
       this.fetchData()
     },
     mounted () {
-      // // let vm = this
-      // this.$nextTick(function () {
-      //   let detail = document.querySelector('#jianjie').children[1]
-      //   let ctl = detail.children[0]
-      //   ctl.addEventListener('click', function () {
-      //     detail.style.maxHeight = ''
-      //   })
-      // })
+      let a = document.querySelector('#tab ul li a')
+      console.log(a)
+      //  调用document对象的 createEvent 方法得到一个event的对象实例。
+      var event = document.createEvent('HTMLEvents')
+      //  initEvent接受3个参数：
+      //  事件类型，是否冒泡，是否阻止浏览器的默认行为
+      event.initEvent('click', true, true)
+      event.eventType = 'message'
+      //  触发document上绑定的自定义事件ondataavailable
+      a.dispatchEvent(event)
     },
     methods: {
       fetchData () {
@@ -79,6 +82,7 @@
           let ret = res.data
           vm.title = ret.title
           vm.musiclist = ret.list
+          console.log(vm.musiclist)
           vm.musicnum = vm.musiclist.length
           vm.listennum = ret.playNum
           vm.picsrc = ret.pic
@@ -101,6 +105,10 @@
           ctrl.classList.remove('opendetail')
           ctrl.classList.add('closedetail')
         }
+      },
+      addTosonglist () {
+        let vm = this
+        this.$root.eventHub.$emit('addTosonglist', vm.musiclist)
       }
     }
   }
@@ -194,8 +202,9 @@
     cursor: pointer;
     padding: 4px 6px;
     display: inline-block;
+    height: 31px;
   }
-   #gedandetail #tool > div > nav:hover{
+  #gedandetail #tool > div > nav:hover{
     background: rgba(101, 181, 152, 0.5);
   }
   #gedandetail #tool div > nav:nth-child(1){

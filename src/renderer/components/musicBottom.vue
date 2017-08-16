@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import config from '../../../config.js'
 export default{
   data () {
     return {
@@ -62,13 +61,13 @@ export default{
       probg: null,
       voicepro: null,
       voiceprobg: null,
-      musiclist: null, //  播放列表
+      musiclist: [], //  播放列表
       currentnum: null
     }
   },
   watch: {
     currentnum (newval, old) {
-      console.log(newval, old)
+      // console.log(newval, old)
       let pre = document.querySelector('#playlist').children[1].children[old]
       let cur = document.querySelector('#playlist').children[1].children[newval]
       // console.log(pre, cur)
@@ -78,14 +77,14 @@ export default{
       if (cur) {
         cur.classList.add('play')
       }
-      this.audio.src = `http://${config.getValue('host')}:${config.getValue('port')}/music/` + this.musiclist[newval].name
-      this.audio.play()
+      // console.log(newval)
+      // console.log(this.musiclist)
+      this.audio.src = this.musiclist[newval].src
+      // this.audio.play()
+      this._play()
     }
   },
   methods: {
-    removeItem (index) {
-
-    },
     updateProgress () {
       this.currentTime = this._parseTime(this.audio.currentTime)
       let barlen = document.querySelector('#bar').children[1].clientWidth
@@ -187,18 +186,22 @@ export default{
     }
   },
   created () {
+    let vm = this
     this.$root.eventHub.$on('playmusic', function (s, list) {
+      // console.log(list)
       this.musiclist = [].slice.call(list)
-      this.currentnum = this.musiclist.map(function (item) {
-        return item.name
-      }).indexOf(s)
+      this.currentnum = s
       this._toggleList()
       this.$nextTick(function () {
         let cur = document.querySelector('#playlist').children[1].children[this.currentnum]
         cur.classList.add('play')
-        console.log(cur)
       })
     }.bind(this))
+
+    this.$root.eventHub.$on('addTosonglist', function (list) {
+      [].concat.call(vm.musiclist, list)
+      console.log(vm.musiclist)
+    })
   },
   mounted () {
     this.prevmusic = document.querySelector('#prevmusic') //  播放上一首音乐

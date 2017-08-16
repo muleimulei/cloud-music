@@ -49,7 +49,7 @@ export default new Router({
             },
             {
               path: '*',
-              redirect: {name: 'musictable'}
+              redirect: 'musictable'
             }
           ]
         },

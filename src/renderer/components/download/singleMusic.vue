@@ -46,7 +46,15 @@ export default{
       shell.openItem(this.saveDir)
     },
     playMusic (path, e) {
-      this.$root.eventHub.$emit('playmusic', path, this.musicList)
+      let prefix = `http://${config.getValue('host')}:${config.getValue('port')}/music/`
+      this.musicList.map(function (item) {
+        item.src = `${prefix}${item.name}`
+      })
+      let num = this.musicList.map(function (item) {
+        return item.src
+      }).indexOf(`${prefix}${path}`)
+      // console.log(this.musicList, `${prefix}${path}`, num)
+      this.$root.eventHub.$emit('playmusic', num, this.musicList)
     }
   },
   created () {

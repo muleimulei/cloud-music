@@ -21,4 +21,9 @@
     list-style: none;
     flex-direction: row;
   }
+  #musictable ul li{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
