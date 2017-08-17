@@ -12,7 +12,7 @@
         <div id="author"></div>
         <div id="tool">
           <div>
-            <nav>播放全部</nav>
+            <nav @click="playmusic">播放全部</nav>
             <nav @click="addTosonglist">+</nav>
           </div>
           <div>
@@ -55,7 +55,8 @@
         musiclist: null, //  数组
         keyword: null,
         detail: null,
-        added: false
+        added: false, //  是否添加到歌单
+        played: false //  歌单是否播放
       }
     },
     created () {
@@ -82,13 +83,11 @@
           let ret = res.data
           vm.title = ret.title
           vm.musiclist = ret.list
-          console.log(vm.musiclist)
           vm.musicnum = vm.musiclist.length
           vm.listennum = ret.playNum
           vm.picsrc = ret.pic
           vm.keyword = ret.keyword
           vm.detail = ret.summary.split('\n').filter((str) => { return str !== '\r' })
-          // console.log(vm.detail)
         }, function (err) {
           console.log(`获取失败：${err}`)
         })
@@ -107,14 +106,35 @@
         }
       },
       addTosonglist () {
+        if (this.added) {
+          return this.$root.eventHub.$emit('addTosonglist', {errno: 1})
+        }
         let vm = this
-        this.$root.eventHub.$emit('addTosonglist', vm.musiclist)
+        vm.musiclist.map(function (item) {
+          item.src = item.file_link
+        })
+        this.$root.eventHub.$emit('addTosonglist', {data: vm.musiclist, errno: 0})
+        vm.added = true
+        vm.played = true
+      },
+      playmusic () {
+        if (this.played) {
+          return this.$root.eventHub.$emit('playmusic', '已经播放')
+        } else {
+          this.musiclist.map(function (item) {
+            item.src = item.file_link
+          })
+          this.$root.eventHub.$emit('playmusic', 0, this.musiclist)
+          this.played = true
+          this.added = true
+        }
       }
     }
   }
 </script>
 
 <style>
+
   #gedandetail *{
     -webkit-app-region: no-drag;
   }
@@ -160,7 +180,7 @@
     margin-right: 30px;
   }
 
-   #gedandetail #title span:nth-of-type(1)::before{
+  #gedandetail #title span:nth-of-type(1)::before{
     content: '';
     display: inline-block;
     background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTAyNjEyNTM3OTIyIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQ0NDEiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNODI1LjU0MjA0MiA2NTIuODI1MzUyYzQ0LjAzMDgxOS0yMjMuMTA3MzU3LTEyNC45NDc3MzMtMjY0LjcyNTIyLTIyNS43NTc3Mi0yOTYuNTI2NTA3bDAgNDAxLjU5NzU0MS0wLjQ5NzMyNyAwYy0xLjE3NTc3OSA2NC44NTQwNzctNDcuMTIzMjUgMTM0LjQwNTEyOS0xMjQuMDc5OTcgMTc2LjM2ODg3LTEwNi4wMjM3MzIgNTcuODE3ODI0LTIzMC42ODE4NyA0MS4zNjQwODMtMjc4LjQzMDM2LTM2Ljc0NDg3OS00Ny43NDQzOTctNzguMTEyMDMyLTAuNTAxNDItMTg4LjI5OTU5NyAxMDUuNTI2NDA1LTI0Ni4xMTc0MiA3OC40NDk3MjMtNDIuNzc3MjY5IDE2Ny4wNjM5NDctNDQuODU0NTgxIDIyNy4yMTE4MzgtMTEuNDI2MjM3TDUyOS41MTQ5MDkgMzExLjMyMTQ2OGwwLTQ1LjMxNjA5MmMwLTc2LjM5Mjg3OCAwLTExNC41MDQ4OTQgMC0yMTAuODExMzFDNTc2LjQzOTYzOCAzNjQuNjc0NjA3IDkzMy43MzYyMDcgMjc0LjgyNTI1MiA4MjUuNTQyMDQyIDY1Mi44MjUzNTJ6IiBwLWlkPSI0NDQyIiBmaWxsPSIjMTI5NmRiIj48L3BhdGg+PC9zdmc+');
@@ -169,10 +189,10 @@
     background-size: cover;
     margin-right: 5px;
   }
-   #gedandetail #title span:nth-of-type(2){
+  #gedandetail #title span:nth-of-type(2){
     margin-right: 30px;
   }
-   #gedandetail #title span:nth-of-type(2)::before{
+  #gedandetail #title span:nth-of-type(2)::before{
     content: '';
     display: inline-block;
     background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNTAyNjEyMTQ1NTgyIiBjbGFzcz0iaWNvbiIgc3R5bGU9IiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjM2MTgiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48L3N0eWxlPjwvZGVmcz48cGF0aCBkPSJNNTEyIDk0NC4zMkMyNzMuNjY0IDk0NC4zMiA3OS42OCA3NTAuMzY4IDc5LjY4IDUxMlMyNzMuNjY0IDc5LjY4IDUxMiA3OS42OGMyMzguMzY4IDAgNDMyLjMyIDE5My45ODQgNDMyLjMyIDQzMi4zMiAwIDIzOC4zNjgtMTkzLjk1MiA0MzIuMzItNDMyLjMyIDQzMi4zMnogbTAtODIxLjMxMkMyOTcuNTA0IDEyMy4wMDggMTIzLjAwOCAyOTcuNTA0IDEyMy4wMDggNTEyYzAgMjE0LjUyOCAxNzQuNDY0IDM4OC45NiAzODguOTkyIDM4OC45NiAyMTQuNTYgMCAzODguOTYtMTc0LjQgMzg4Ljk2LTM4OC45NiAwLTIxNC41MjgtMTc0LjQzMi0zODguOTkyLTM4OC45Ni0zODguOTkyeiIgcC1pZD0iMzYxOSIgZmlsbD0iIzEyOTZkYiI+PC9wYXRoPjxwYXRoIGQ9Ik0zOTIuODk2IDcyMC4wNjRjLTIxLjIxNiAwLTM2Ljg2NC0xNy4yNDgtMzcuMDI0LTQwLjkyOGwtMi40MzItMzMzLjgyNGMtMC4xMjgtMTUuOTY4IDYuMjQtMjUuNzkyIDExLjU1Mi0zMS4xNjggMTEuODA4LTExLjkzNiAzMS4xMDQtMTMuODI0IDQ4LjI4OC00bDI5MC4yNCAxNjQuNzY4YzE0LjE3NiA4LjAzMiAyMi4zNjggMjAuNjQgMjIuNDY0IDM0LjQ5NiAwLjE2IDEzLjg4OC03Ljg0IDI2LjU5Mi0yMS45MiAzNC45NDRsLTI4Ny44NzIgMTY4Ljk2Yy03LjY4IDQuNDQ4LTE1LjQ4OCA2Ljc1Mi0yMy4yOTYgNi43NTJ6IG00LjEyOC0zNjkuMzQ0bDIuMTEyIDMyMi4xMTIgMjc3Ljk1Mi0xNjIuOTEyLTI4MC4wNjQtMTU5LjJ6IiBwLWlkPSIzNjIwIiBmaWxsPSIjMTI5NmRiIj48L3BhdGg+PC9zdmc+');
@@ -185,20 +205,20 @@
     margin-right: auto;
   }
 
-   #gedandetail #tool{
+  #gedandetail #tool{
     display: flex;
     flex-direction: row;
     font-size: 14px;
     margin: 15px 0;
     align-items: center;
   }
-   #gedandetail #tool > div{
+  #gedandetail #tool > div{
     border-radius: 4px;
     border: .5px solid #ccc;
     margin-right: 20px;
     cursor: pointer;
   }
-   #gedandetail #tool > div > nav{
+  #gedandetail #tool > div > nav{
     cursor: pointer;
     padding: 4px 6px;
     display: inline-block;
@@ -308,37 +328,37 @@
     background-size: cover;
   }
 
-#tab{
-  margin-top: 30px;
-}
-#tab > ul{
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  align-items: center;
-  border-bottom: 1px solid rgba(202, 169, 11, 0.73);
-}
-#tab > ul > li{
-  border: .5px solid rgba(0, 0, 0, .3);
-  margin-right: 10px;
-  cursor: pointer;
-  border-bottom: none;
-}
+  #tab{
+    margin-top: 30px;
+  }
+  #tab > ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    align-items: center;
+    border-bottom: 1px solid rgba(202, 169, 11, 0.73);
+  }
+  #tab > ul > li{
+    border: .5px solid rgba(0, 0, 0, .3);
+    margin-right: 10px;
+    cursor: pointer;
+    border-bottom: none;
+  }
 
-#tab > ul > li:not(.router-link-active):hover{
-  background: rgba(224, 150, 9, 0.39);
-}
+  #tab > ul > li:not(.router-link-active):hover{
+    background: rgba(224, 150, 9, 0.39);
+  }
 
-#tab > ul > li a{
-  color: black;
-  padding: 6px 10px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-}
+  #tab > ul > li a{
+    color: black;
+    padding: 6px 10px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+  }
 
-#tab a.router-link-active{
-  background: rgba(224, 150, 9, 0.94);
-  color: white;
-}
+  #tab a.router-link-active{
+    background: rgba(224, 150, 9, 0.94);
+    color: white;
+  }
 </style>

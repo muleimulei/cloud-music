@@ -25,7 +25,7 @@ function iterator (dir, x) {
     if (stat.isFile() && /\.mp3/.test(item)) {
       var obj = {}
       obj.size = getSize(stat.size)
-      obj.name = item
+      obj.title = item
       // obj.path = path.join(__static + '/msuic/', item)
       x.push(obj)
     } else {
