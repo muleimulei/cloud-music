@@ -39,7 +39,7 @@
         <li><router-link :to="{name: 'musictable'}">歌曲列表</router-link></li>
         <li><router-link :to="{name: 'musiccomment'}">评论</router-link></li>
       </ul>
-      <router-view></router-view>
+      <router-view :musiclist = "musiclist"></router-view>
   </div>
   </div>
 </template>
@@ -65,16 +65,15 @@
       this.fetchData()
     },
     mounted () {
-      let a = document.querySelector('#tab ul li a')
-      console.log(a)
-      //  调用document对象的 createEvent 方法得到一个event的对象实例。
-      var event = document.createEvent('HTMLEvents')
-      //  initEvent接受3个参数：
-      //  事件类型，是否冒泡，是否阻止浏览器的默认行为
-      event.initEvent('click', true, true)
-      event.eventType = 'message'
-      //  触发document上绑定的自定义事件ondataavailable
-      a.dispatchEvent(event)
+      // let a = document.querySelector('#tab ul li a')
+      // //  调用document对象的 createEvent 方法得到一个event的对象实例。
+      // var event = document.createEvent('HTMLEvents')
+      // //  initEvent接受3个参数：
+      // //  事件类型，是否冒泡，是否阻止浏览器的默认行为
+      // event.initEvent('click', true, true)
+      // event.eventType = 'message'
+      // //  触发document上绑定的自定义事件ondataavailable
+      // a.dispatchEvent(event)
     },
     methods: {
       fetchData () {
@@ -83,6 +82,7 @@
           let ret = res.data
           vm.title = ret.title
           vm.musiclist = ret.list
+          console.log(vm.musiclist)
           vm.musicnum = vm.musiclist.length
           vm.listennum = ret.playNum
           vm.picsrc = ret.pic

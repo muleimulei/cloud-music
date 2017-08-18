@@ -17,7 +17,14 @@ mongoose.connection.on('connected', function () {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(function (req, res, next) {
+  console.log('123')
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+},express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', function (req, res, next) {
   function unauthorized(resp) {
@@ -33,6 +40,7 @@ app.use('/admin', function (req, res, next) {
     next();
   }else{
     unauthorized(res);
+  }
   }
 });
 
@@ -60,6 +68,11 @@ app.use('/api', function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 } ,require('./routes/getmusic.js'));
+// 下载音乐
+app.use('/media', function (req, res) {
+  
+})
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

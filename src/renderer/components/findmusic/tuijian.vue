@@ -10,7 +10,7 @@
             <img :src="musiclist[0].pic" alt="专辑图片">
             <div id="title">{{ musiclist[0].title }}</div>
             <span> <i class="fa fa-play-circle-o"></i>{{ musiclist[0].playNum }}</span>
-             <router-link :to="{name: 'gedan', params: {id: musiclist[0]._id}}" ><i class="fa fa-play-circle-o"></i></router-link>
+             <router-link :to="{name: 'musictable', params: {id: musiclist[0]._id}}" ><i class="fa fa-play-circle-o"></i></router-link>
           </div>
         </div>
     </section>

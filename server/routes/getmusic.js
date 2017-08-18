@@ -19,7 +19,7 @@ router.get('/getgedandetail/:id', function (req, res, next) {
             console.log(err)
         }else{
             doc.list.map(function (item) {
-                item.file_link = `http://${config.listenhost}:${config.listenport}/${item.file_link}`
+                item.file_link = `http://${config.listenhost}:${config.listenport}${item.file_link}`
                 return item
             })
             res.json(doc)

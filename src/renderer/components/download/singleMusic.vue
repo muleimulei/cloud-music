@@ -17,9 +17,7 @@
           </thead>
           <tbody>
             <tr  v-for = "(item, index) in list" @click="playMusic(item.name, $event)">
-              <td>{{index+1}}</td>
-              <td>{{item.name}}</td>
-              <td>{{item.size}}</td>
+              <td>{{index+1}}</td><td>{{item.title}}</td><td>{{item.size}}</td>
             </tr>
           </tbody>
         </table>
@@ -66,7 +64,7 @@ export default{
   computed: {
     list () {
       return this.musicList.filter(function (item) {
-        return item.name.toLowerCase().indexOf(this.musicname.toLowerCase()) !== -1
+        return item.title.toLowerCase().indexOf(this.musicname.toLowerCase()) !== -1
       }.bind(this))
     }
   }
